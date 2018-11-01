@@ -37,6 +37,8 @@ jobs:
       echo See https://aka.ms/yaml
     displayName: 'Testing running a multi-line script'
 
+  #Before Install Scripts
+
   - script: |
       npm config set shrinkwrap false
     displayName: 'Configure npm: Skip updating shrinkwrap / lock'
@@ -63,3 +65,8 @@ jobs:
         npm rebuild
       fi
     displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
+
+  #Testing
+  - script: |
+      npm run test-ci
+    displayName: 'Run test script'
