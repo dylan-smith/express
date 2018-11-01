@@ -13,5 +13,6 @@ steps:
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
-    echo even more stuff
+    echo even more stuff $(System.DefaultWorkingDirectory)
+    echo 'I wonder if single quotes will work. Working Directory $(System.DefaultWorkingDirectory)'
   displayName: 'Run a multi-line script'
