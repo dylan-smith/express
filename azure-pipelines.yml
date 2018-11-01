@@ -15,4 +15,5 @@ steps:
     echo See https://aka.ms/yaml
     echo even more stuff $(System.DefaultWorkingDirectory)
     echo 'I wonder if single quotes will work. Working Directory $(System.DefaultWorkingDirectory)'
+    echo "I wonder if double quotes will work. Working Directory $(System.DefaultWorkingDirectory)""
   displayName: 'Run a multi-line script'
