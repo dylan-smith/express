@@ -70,3 +70,6 @@ jobs:
   - script: |
       npm run test-ci
     displayName: 'Run test script'
+  - script: |
+      npm run lint
+    displayName: 'Run linting'
