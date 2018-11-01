@@ -19,7 +19,7 @@
 #  displayName: 'Run a multi-line script'
 
 jobs:
-- job: BuildMacOS
+- job: BuildLinuxOS
   strategy:
     maxParallel: 2
     matrix:
@@ -35,4 +35,8 @@ jobs:
   - script: |
       echo NODE_VERSION = $(NODE_VERSION)
       echo See https://aka.ms/yaml
-    displayName: 'Run a multi-line script'
+    displayName: 'Testing running a multi-line script'
+
+  - script: |
+      npm config set shrinkwrap false
+    displayName: 'Configure npm: Skip updating shrinkwrap / lock'
