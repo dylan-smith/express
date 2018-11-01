@@ -73,3 +73,9 @@ jobs:
   - script: |
       npm run lint
     displayName: 'Run linting'
+
+  #after_script:
+  - script: |
+      npm install --save-dev coveralls@2.10.0
+      coveralls < ./coverage/lcov.info
+    displayName: 'Upload coverage to coveralls'
