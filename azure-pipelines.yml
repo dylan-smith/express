@@ -50,3 +50,16 @@ jobs:
         npm install --silent --save-dev mocha@3.5.3
       fi
     displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+
+  - script: |
+      if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 4 ]]; then
+        npm install --silent --save-dev supertest@2.0.0
+      fi
+    displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
+    
+  - script: |
+      if [[ -d node_modules ]]; then
+        npm prune
+        npm rebuild
+      fi
+    displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
