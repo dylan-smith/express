@@ -3,17 +3,36 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+#pool:
+#  vmImage: 'Ubuntu 16.04'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-    echo even more stuff $(System.DefaultWorkingDirectory)
-    echo 'I wonder if single quotes will work. Working Directory $(System.DefaultWorkingDirectory)'
-    echo "I wonder if double quotes will work. Working Directory $(System.DefaultWorkingDirectory)"
-  displayName: 'Run a multi-line script'
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#    echo even more stuff $(System.DefaultWorkingDirectory)
+#    echo 'I wonder if single quotes will work. Working Directory $(System.DefaultWorkingDirectory)'
+#    echo "I wonder if double quotes will work. Working Directory $(System.DefaultWorkingDirectory)"
+#  displayName: 'Run a multi-line script'
+
+jobs:
+- job: BuildMacOS
+  strategy:
+    maxParallel: 2
+    matrix:
+      Node9:
+        NODE_VERSION: '9.x'
+      Node10:
+        NODE_VERSION: '10.x'
+
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  steps:
+  - script: |
+      echo NODE_VERSION = $(NODE_VERSION)
+      echo See https://aka.ms/yaml
+    displayName: 'Run a multi-line script'
