@@ -1,0 +1,29 @@
+jobs:
+- job: NodeBuildOnLinux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 2
+    matrix:
+      Node9:
+        node.version: '9.x'
+        
+  steps:
+  - task: Bash@3
+    inputs:
+      displayName: 'Before Install: Configure NPM - Skip updating shrinkwrap / lock'
+      targetType: 'inline'
+      script: 'npm config set shrinkwrap false'
+
+  - task: Bash@3
+    inputs:
+      displayName: 'Before Install: Remove all non-test dependencies - Remove example dependencies'
+      targetType: 'inline'
+      script: 'npm rm --silent --save-dev connect-redis'
+
+  - task: Bash@3
+    inputs:
+      displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+      targetType: 'inline'
+      script: 'if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 6 ]]; then npm install --silent --save-dev mocha@3.5.3 fi'
+
