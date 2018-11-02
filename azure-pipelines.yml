@@ -105,13 +105,13 @@ jobs:
 
   #commenting this out for now until we figure out what to do with coveralls
 
-  
+  - task: 
 
   #after_script:
-  - task: 4tecture.Tokenizer.Tokenizer.Tokenizer@0
-    displayName: Tokenizer
+  - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
+    displayName: 'Replace tokens in '
     inputs:
-      sourceFilesPattern: .coveralls.yml
+      filePattern: .coveralls.yml
 
   - script: |
       npm install --save-dev coveralls@2.10.0
