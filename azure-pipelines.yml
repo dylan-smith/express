@@ -104,7 +104,15 @@ jobs:
  #     PathtoPublish: '$(build.artifactstagingdirectory)'
 
   #commenting this out for now until we figure out what to do with coveralls
+
+  
+
   #after_script:
+  - task: 4tecture.Tokenizer.Tokenizer.Tokenizer@0
+    displayName: Tokenizer
+    inputs:
+      sourceFilesPattern: .coveralls.yml
+
   - script: |
       npm install --save-dev coveralls@2.10.0
       node_modules/.bin/coveralls < ./coverage/lcov.info
