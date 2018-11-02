@@ -150,5 +150,5 @@ jobs:
   - script: |
       try { Install-Product node $(NODE_VERSION) -ErrorAction Stop }
       catch { Update-NodeJsInstallation (Get-NodeJsLatestBuild $(NODE_VERSION)) }
-    displayName: 'Configure npm: Skip updating shrinkwrap / lock'
+    displayName: 'Install Node.js'
 
