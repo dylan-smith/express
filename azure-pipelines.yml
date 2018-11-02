@@ -74,8 +74,21 @@ jobs:
       npm run lint
     displayName: 'Run linting'
 
+  #Copy artifacts to staging and publish them
+  - task: CopyFiles@2
+    displayName: 'Copy Files To Staging'
+    inputs:
+      SourceFolder: '$(build.sourcesdirectory)'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+
+  #commenting this out for now until we figure out what to do with coveralls
   #after_script:
-  - script: |
-      npm install --save-dev coveralls@2.10.0
-      coveralls < ./coverage/lcov.info
-    displayName: 'Upload coverage to coveralls'
+  #- script: |
+  #    npm install --save-dev coveralls@2.10.0
+  #    coveralls < ./coverage/lcov.info
+  #  displayName: 'Upload coverage to coveralls'
