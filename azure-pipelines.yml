@@ -105,10 +105,8 @@ jobs:
 
   #commenting this out for now until we figure out what to do with coveralls
 
-  - task: 
-
-  #after_script:
-  - task: colinsalmcorner.colinsalmcorner-buildtasks.replace-tokens-task.ReplaceTokens@1
+    #after_script:
+  - task: ReplaceTokens@1
     displayName: 'Replace tokens in '
     inputs:
       filePattern: .coveralls.yml
