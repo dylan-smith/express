@@ -147,8 +147,7 @@ jobs:
     displayName: 'Testing running a multi-line script'
       
   # Install Node.js
-  - script: |
+  - powershell: |
       try { Install-Product node $(NODE_VERSION) -ErrorAction Stop }
       catch { Update-NodeJsInstallation (Get-NodeJsLatestBuild $(NODE_VERSION)) }
     displayName: 'Install Node.js'
-
