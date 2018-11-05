@@ -106,10 +106,16 @@ jobs:
   #commenting this out for now until we figure out what to do with coveralls
 
     #after_script:
-  - task: ReplaceTokens@1
-    displayName: 'Replace tokens in '
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    displayName: 'Replace tokens in **/.coveralls.yml'
     inputs:
-      filePattern: .coveralls.yml
+      targetFiles: '**/mickey.yml'
+
+      keepToken: true
+
+      tokenPrefix: '_'
+
+      tokenSuffix: '_'
 
   - script: |
       npm install --save-dev coveralls@2.10.0
