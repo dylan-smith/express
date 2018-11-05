@@ -158,4 +158,38 @@ jobs:
     inputs:
       versionSpec: '$(NODE_VERSION)'
 
+  - script: |
+      npm config set shrinkwrap false
+    displayName: 'Configure npm: Skip updating shrinkwrap / lock'
 
+  - script: |
+      npm rm --silent --save-dev connect-redis
+    displayName: 'Remove all non-test dependencies: Remove example dependencies'
+
+  - powershell: |
+      # mocha for testing
+      # - use 3.x for Node.js < 6
+      if ($env:nodejs_version.split(".")[0] -lt 6) {
+        npm install --silent --save-dev mocha@3.5.3
+      }
+    displayName: 'Setup Node.js version specific dependencies: Mocha for testing'
+
+  - powershell: |
+      # supertest for http calls
+      # - use 2.0.0 for Node.js < 4
+      if ($env:nodejs_version.split(".")[0] -lt 4) {
+        npm install --silent --save-dev supertest@2.0.0
+      }
+    displayName: 'supertest for http calls, use 2.0.0 for Node.js < 4'
+
+  - powershell: |
+      # Prune & rebuild node_modules
+      if (Test-Path -Path node_modules) {
+        npm prune
+        npm rebuild
+      }
+    displayName: 'Update Node.js modules'
+
+  - powershell: |
+      npm install
+    displayName: 'Install Node JS Modules'
