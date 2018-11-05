@@ -109,7 +109,7 @@ jobs:
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     displayName: 'Replace tokens in **/.coveralls.yml'
     inputs:
-      targetFiles: '**/.coveralls.yml'
+      targetFiles: '.coveralls.yml'
 
       keepToken: true
 
