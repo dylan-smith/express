@@ -193,3 +193,17 @@ jobs:
   - powershell: |
       npm install
     displayName: 'Install Node JS Modules'
+
+  - powershell: |
+      node --version
+      npm --version
+    displayName: 'Output version data'
+
+  
+  #Testing
+  - powershell: |
+      npm run test-ci
+    displayName: 'Run test script'
+  - powershell: |
+      npm run lint
+    displayName: 'Run linting'
