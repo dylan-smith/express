@@ -21,26 +21,26 @@
 jobs:
 - job: BuildLinuxOS
   strategy:
-    maxParallel: 5
+    maxParallel: 10
     matrix:
-#      Node0.10:
-#        NODE_VERSION: '0.10'
-#      Node0.12:
-#        NODE_VERSION: '0.12'
-#      Node1.8:
-#        NODE_VERSION: '1.8'
-#      Node2.5:
-#        NODE_VERSION: '2.5'
-#      Node3.3:
-#        NODE_VERSION: '3.3'
-#      Node4.9:
-#        NODE_VERSION: '4.9'
-#      Node5.12:
-#        NODE_VERSION: '5.12'
-#      Node6.14:
-#        NODE_VERSION: '6.14'
-#      Node7.10:
-#        NODE_VERSION: '7.10'
+      Node0.10:
+        NODE_VERSION: '0.10'
+      Node0.12:
+        NODE_VERSION: '0.12'
+      Node1.8:
+        NODE_VERSION: '1.8'
+      Node2.5:
+        NODE_VERSION: '2.5'
+      Node3.3:
+        NODE_VERSION: '3.3'
+      Node4.9:
+        NODE_VERSION: '4.9'
+      Node5.12:
+        NODE_VERSION: '5.12'
+      Node6.14:
+        NODE_VERSION: '6.14'
+      Node7.10:
+        NODE_VERSION: '7.10'
       Node8.12:
         NODE_VERSION: '8.12'
 
@@ -91,17 +91,18 @@ jobs:
     displayName: 'Run linting'
 
  
+  # commenting out for now because it doesn't exist in the current travis build
   #Copy artifacts to staging and publish them
-  - task: CopyFiles@2
-    displayName: 'Copy Files To Staging'
-    inputs:
-      SourceFolder: '$(build.sourcesdirectory)'
-      TargetFolder: '$(build.artifactstagingdirectory)'
+  #- task: CopyFiles@2
+  #  displayName: 'Copy Files To Staging'
+  #  inputs:
+  #    SourceFolder: '$(build.sourcesdirectory)'
+  #    TargetFolder: '$(build.artifactstagingdirectory)'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifacts'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
+  #- task: PublishBuildArtifacts@1
+  #  displayName: 'Publish Artifacts'
+  #  inputs:
+  #    PathtoPublish: '$(build.artifactstagingdirectory)'
 
  
 
