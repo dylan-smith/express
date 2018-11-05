@@ -113,9 +113,9 @@ jobs:
 
       keepToken: true
 
-      tokenPrefix: '_'
+      tokenPrefix: '___'
 
-      tokenSuffix: '_'
+      tokenSuffix: '___'
 
   - script: |
       npm install --save-dev coveralls@2.10.0
