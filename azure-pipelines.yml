@@ -1,46 +1,28 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-#pool:
-#  vmImage: 'Ubuntu 16.04'
-
-#steps:
-#- script: echo Hello, world!
-#  displayName: 'Run a one-line script'
-
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#    echo even more stuff $(System.DefaultWorkingDirectory)
-#    echo 'I wonder if single quotes will work. Working Directory $(System.DefaultWorkingDirectory)'
-#    echo "I wonder if double quotes will work. Working Directory $(System.DefaultWorkingDirectory)"
-#  displayName: 'Run a multi-line script'
-
+#For now comment out the other Linux versions
+#TODO: Add the ver 9 and 10 nightly builds and figure out how to let them fail
 jobs:
 - job: BuildLinuxOS
   strategy:
     maxParallel: 10
     matrix:
-      Node0.10:
-        NODE_VERSION: '0.10'
-      Node0.12:
-        NODE_VERSION: '0.12'
-      Node1.8:
-        NODE_VERSION: '1.8'
-      Node2.5:
-        NODE_VERSION: '2.5'
-      Node3.3:
-        NODE_VERSION: '3.3'
-      Node4.9:
-        NODE_VERSION: '4.9'
-      Node5.12:
-        NODE_VERSION: '5.12'
-      Node6.14:
-        NODE_VERSION: '6.14'
-      Node7.10:
-        NODE_VERSION: '7.10'
+      #Node0.10:
+      #  NODE_VERSION: '0.10'
+      #Node0.12:
+      #  NODE_VERSION: '0.12'
+      #Node1.8:
+      #  NODE_VERSION: '1.8'
+      #Node2.5:
+      #  NODE_VERSION: '2.5'
+      #Node3.3:
+      #  NODE_VERSION: '3.3'
+      #Node4.9:
+      #  NODE_VERSION: '4.9'
+      #Node5.12:
+      #  NODE_VERSION: '5.12'
+      #Node6.14:
+      #  NODE_VERSION: '6.14'
+      #Node7.10:
+      #  NODE_VERSION: '7.10'
       Node8.12:
         NODE_VERSION: '8.12'
 
@@ -48,10 +30,10 @@ jobs:
     vmImage: 'ubuntu-16.04'
 
   steps:
-  - script: |
-      echo NODE_VERSION = $(NODE_VERSION)
-      echo See https://aka.ms/yaml
-    displayName: 'Testing running a multi-line script'
+  #- script: |
+  #    echo NODE_VERSION = $(NODE_VERSION)
+  #    echo See https://aka.ms/yaml
+  #  displayName: 'Testing running a multi-line script'
 
   #Before Install Scripts
 
@@ -82,6 +64,20 @@ jobs:
       fi
     displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
 
+  #Finished With Before Install. Time to install dependencies
+
+  #TODO: Add a step here to configure node version. This is required for the language step
+  #I ultimately need to do both an npm install and npm test
+  - task: NodeTool@0
+    displayName: 'Node Tool install $(NODE_VERSION)'
+    inputs:
+      versionSpec: '$(NODE_VERSION)'
+
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      verbose: false
+
   #Testing
   - script: |
       npm run test-ci
@@ -89,22 +85,6 @@ jobs:
   - script: |
       npm run lint
     displayName: 'Run linting'
-
- 
-  # commenting out for now because it doesn't exist in the current travis build
-  #Copy artifacts to staging and publish them
-  #- task: CopyFiles@2
-  #  displayName: 'Copy Files To Staging'
-  #  inputs:
-  #    SourceFolder: '$(build.sourcesdirectory)'
-  #    TargetFolder: '$(build.artifactstagingdirectory)'
-
-  #- task: PublishBuildArtifacts@1
-  #  displayName: 'Publish Artifacts'
-  #  inputs:
-  #    PathtoPublish: '$(build.artifactstagingdirectory)'
-
- 
 
     #after_script:
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -123,87 +103,23 @@ jobs:
       node_modules/.bin/coveralls < ./coverage/lcov.info
     displayName: 'Upload coverage to coveralls'
 
-
-- job: BuildWindowsOS
-  strategy:
-    maxParallel: 10
-    matrix:
-      Node0.10:
-        NODE_VERSION: '0.10'
-      Node0.12:
-        NODE_VERSION: '0.12'
-      Node1.8:
-        NODE_VERSION: '1.8'
-      Node2.5:
-        NODE_VERSION: '2.5'
-      Node3.3:
-        NODE_VERSION: '3.3'
-      Node4.9:
-        NODE_VERSION: '4.9'
-      Node5.12:
-        NODE_VERSION: '5.12'
-      Node6.14:
-        NODE_VERSION: '6.14'
-      Node7.10:
-        NODE_VERSION: '7.10'
-      Node8.12:
-        NODE_VERSION: '8.12'
-
-  pool:
-    vmImage: 'vs2017-win2016'
-
-  steps:
-  - task: NodeTool@0
-    displayName: 'Use $(NODE_VERSION)'
+  #Copy artifacts to staging and publish them
+  - task: CopyFiles@2
+    displayName: 'Copy Files To Staging'
     inputs:
-      versionSpec: '$(NODE_VERSION)'
+      SourceFolder: '$(build.sourcesdirectory)'
+      TargetFolder: '$(build.artifactstagingdirectory)'
 
-  - script: |
-      npm config set shrinkwrap false
-    displayName: 'Configure npm: Skip updating shrinkwrap / lock'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
 
-  - script: |
-      npm rm --silent --save-dev connect-redis
-    displayName: 'Remove all non-test dependencies: Remove example dependencies'
+#TODO:  Need to add a publish test results, potentially?
 
-  - powershell: |
-      # mocha for testing
-      # - use 3.x for Node.js < 6
-      if (("$(NODE_VERSION)").split(".")[0] -lt 6) {
-        npm install --silent --save-dev mocha@3.5.3
-      }
-    displayName: 'Setup Node.js version specific dependencies: Mocha for testing'
-
-  - powershell: |
-      # supertest for http calls
-      # - use 2.0.0 for Node.js < 4
-      if (("$(NODE_VERSION)").split(".")[0] -lt 4) {
-        npm install --silent --save-dev supertest@2.0.0
-      }
-    displayName: 'supertest for http calls, use 2.0.0 for Node.js < 4'
-
-  - powershell: |
-      # Prune & rebuild node_modules
-      if (Test-Path -Path node_modules) {
-        npm prune
-        npm rebuild
-      }
-    displayName: 'Update Node.js modules'
-
-  - powershell: |
-      npm install
-    displayName: 'Install Node JS Modules'
-
-  - powershell: |
-      node --version
-      npm --version
-    displayName: 'Output version data'
-
-  
-  #Testing
-  - powershell: |
-      npm run test-ci
-    displayName: 'Run test script'
-  - powershell: |
-      npm run lint
-    displayName: 'Run linting'
+#TODO:
+#Haven't decided if I need to zip this up yet.
+#- task: ArchiveFiles@2
+#  displayName: 'Archive /'
+#  inputs:
+#    rootFolderOrFile: /
