@@ -105,9 +105,9 @@ jobs:
 
   #Copy artifacts to staging and publish them
   - task: CopyFiles@2
-    displayName: 'Copy Files To Staging'
+    displayName: 'Copy coverage Files To Staging'
     inputs:
-      SourceFolder: '$(build.sourcesdirectory)/benchmarks'
+      SourceFolder: '$(build.sourcesdirectory)/coverage'
       TargetFolder: '$(build.artifactstagingdirectory)'
 
   - task: PublishBuildArtifacts@1
