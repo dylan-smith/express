@@ -78,6 +78,10 @@ jobs:
     inputs:
       verbose: false
 
+  - script: |
+      npm test
+    displayName: 'npm test'
+
   #Testing
   - script: |
       npm run test-ci
@@ -103,7 +107,7 @@ jobs:
       node_modules/.bin/coveralls < ./coverage/lcov.info
     displayName: 'Upload coverage to coveralls'
 
-  #Copy artifacts to staging and publish them
+  #Copy coverage artifacts to staging and publish them
   - task: CopyFiles@2
     displayName: 'Copy coverage Files To Staging'
     inputs:
@@ -115,11 +119,5 @@ jobs:
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)'
 
-#TODO:  Need to add a publish test results, potentially?
-
-#TODO:
-#Haven't decided if I need to zip this up yet.
-#- task: ArchiveFiles@2
-#  displayName: 'Archive /'
-#  inputs:
-#    rootFolderOrFile: /
+#TODO:  Need to add a publish test results, potentially? I don't know how helpful it will be.
+#I don't think there are actual test results to publish.
