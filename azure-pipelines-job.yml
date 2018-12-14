@@ -1,9 +1,10 @@
 #For now comment out the other Linux versions
 #TODO: Add the ver 9 and 10 nightly builds and figure out how to let them fail
 jobs:
-- job: ${{parameters.NODE_VERSION}}
+- job: ${{parameters.Job_Name}}
   continueOnError: ${{ parameters.Allow_Failures }}
   condition: succeededOrFailed()
+  displayName: "Node Version ${{parameters.NODE_VERSION}}"
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
   
