@@ -34,8 +34,8 @@ jobs:
       ##vso[task.setvariable variable=foo;isSecret=false;isOutput=true;]pleasework
       Write-Host '##vso[task.setvariable variable=foo2;isSecret=false;isOutput=true;]pleasework2'
 
-      Write-Host $env:foo
-      Write-Host $env:foo2
+      Write-Host $env:myvars.foo
+      Write-Host $env:myvars.foo2
       
     displayName: "Please Work Powershell"     
     name: myvars
@@ -44,8 +44,8 @@ jobs:
       # Write your powershell commands here.
       Write-Host "Hello World2"
       # Use the environment variables input below to pass secret variables to this script.
-      Write-Host $env:foo
-      Write-Host $env:foo2
+      Write-Host $env:myvars.foo
+      Write-Host $env:myvars.foo2
 
       ##vso[task.setvariable variable=foo;isSecret=false;isOutput=true;]pleasework
       Write-Host '##vso[task.setvariable variable=foo2;isSecret=false;isOutput=true;]pleasework2'
