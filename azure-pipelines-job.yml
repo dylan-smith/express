@@ -3,6 +3,7 @@
 jobs:
 - job: ${{parameters.NODE_VERSION}}
   continueOnError: ${{ parameters.Allow_Failures }}
+  condition: succeededOrFailed
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
   
