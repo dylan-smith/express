@@ -6,14 +6,19 @@ parameters:
 
 jobs:
 - job: 
+  strategy:
+    maxParallel: 2
+    matrix:
+      Linux:
+        vmImage: 'ubuntu-16.04'
   continueOnError: ${{ parameters.Allow_Failures }}
   condition: succeededOrFailed()
-  displayName: "Node Version ${{parameters.NODE_VERSION}}"
+  displayName: "Node Version ${{parameters.NODE_VERSION}} using $(Agent.OS)"
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
   
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: $(vmImage)
   
   steps:
   #Before Install Scripts
@@ -65,22 +70,14 @@ jobs:
     inputs:
       verbose: false
 
-  #TODO: This step may not be needed, as it seems to partially duplicate the npm run test-ci step.
-  - script: |
-      npm test
-    displayName: 'npm test'
-  #  continueOnError: $[eq(variables['CanFail'], true)]
-
   #Testing
   - script: |
       npm run test-ci
     displayName: 'Run test script'
-  #  continueOnError: $[eq(variables['CanFail'], true)]
 
   - script: |
       npm run lint
     displayName: 'Run linting'
-  #  continueOnError: $[eq(variables['CanFail'], true)]
 
     #after_script:
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
