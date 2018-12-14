@@ -22,7 +22,7 @@ jobs:
   - script: |
       IFS='.' read -r -a array <<< "$(NODE_VERSION)"
       echo "${array[0]}"
-      echo '##vso[task.setvariable variable=major]${array[0]}'
+      echo '##vso[task.setvariable variable=major]"${array[0]}"'
 
     displayName: "Get major version number of Node"
     name: getver
