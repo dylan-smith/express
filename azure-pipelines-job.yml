@@ -26,6 +26,7 @@ jobs:
       Write-Host '##vso[task.setvariable variable=nodeVersionNumber]($env:AGENT_HOMEDIRECTORY)'
       Write-Host $env:AGENT_HOMEDIRECTORY
       Write-Host $nodeVersionNumber
+      Write-Host $env:NODEVERSIONNUMBER
     displayName: "Get major version number of Node"
 
   - script: |
