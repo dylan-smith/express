@@ -26,16 +26,20 @@ jobs:
       Write-Host "Hello World"
       # Use the environment variables input below to pass secret variables to this script.
       $rc = "7.10"
+      $rc2 = $rc.split(".")[0]
       if ($rc.split(".")[0] -gt 4) 
       {
         Write-Host "In the if statement"
-        $rc2 = $rc.split(".")[0]
         Write-Host $rc2
         Write-Host $env:NODE_VERSION
+        Write-Host $env.MAJOR1
+        Write-Host $env.major1
         Write-Host '##vso[task.setvariable variable=MAJOR1]42'
         Write-Host $env.MAJOR1
         Write-Host $env.major1
         
+        Write-Host $env.MAJOR2
+        Write-Host $env.major2
         Write-Host '##vso[task.setvariable variable=MAJOR2]$rc2'
         Write-Host $env.MAJOR2
         Write-Host $env.major2
