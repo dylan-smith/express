@@ -82,18 +82,18 @@ jobs:
   - script: |
       npm test
     displayName: 'npm test'
-    continueOnError: [eq(variables['CanFail'], true)]
+    continueOnError: $[eq(variables['CanFail'], true)]
 
   #Testing
   - script: |
       npm run test-ci
     displayName: 'Run test script'
-    continueOnError: [eq(variables['CanFail'], true)]
+    continueOnError: $[eq(variables['CanFail'], true)]
 
   - script: |
       npm run lint
     displayName: 'Run linting'
-    continueOnError: [eq(variables['CanFail'], true)]
+    continueOnError: $[eq(variables['CanFail'], true)]
 
     #after_script:
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
