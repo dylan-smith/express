@@ -1,0 +1,13 @@
+parameters:
+  Allow_Failures: false
+
+jobs:
+
+- template: "azure-pipelines-job.yml"
+  parameters:
+    NODE_VERSION: "7.10"
+
+- template: "azure-pipelines-job.yml"
+  parameters:
+    NODE_VERSION: "8.12"
+    Allow_Failures: true
