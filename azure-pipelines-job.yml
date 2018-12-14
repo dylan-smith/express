@@ -43,10 +43,13 @@ jobs:
         Write-Host '##vso[task.setvariable variable=MAJOR2;isOutput=true]$rc2'
         Write-Host $env.MAJOR2
         Write-Host $env.major2
+
+        Write-Host "so maybe"
+        $env.PLEASEWORK = "49"
+        Write-Host $env.PLEASEWORK
        
       }
-    displayName: "Please Work Powershell" 
-    name: getversion
+    displayName: "Please Work Powershell"     
 
   #Get the version number of Node, so we can use it in conditions
   #- script: |
