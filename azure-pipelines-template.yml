@@ -2,7 +2,7 @@ jobs:
 
 - template: "azure-pipelines-job.yml"
   parameters:
-    NODE_VERSION: "7.10"
+    NODE_VERSION: 7.10
 
 #- template: "azure-pipelines-job.yml"
 #  parameters:
