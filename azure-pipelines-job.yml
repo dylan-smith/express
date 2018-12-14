@@ -23,7 +23,8 @@ jobs:
   #    echo '##vso[task.setvariable variable=nodeVersionNumber]$(NODE_VERSION)'
   #  displayName: "Get major version number of Node"
   - powershell: |
-      Write-Host '##vso[task.setvariable variable=nodeVersionNumber]$env:SYSTEM_ACCESSTOKEN'
+      Write-Host '##vso[task.setvariable variable=nodeVersionNumber]$env:AGENT_HOMEDIRECTORY'
+      Write-Host $env:AGENT_HOMEDIRECTORY
     displayName: "Get major version number of Node"
 
   - script: |
