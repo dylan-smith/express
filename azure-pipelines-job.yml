@@ -18,24 +18,28 @@ jobs:
   steps:
   #Before Install Scripts
 
-  #Get the version number of Node, so we can use it in conditions
-  - script: |
-      IFS='.' read -r -a array <<< "$(NODE_VERSION)"
-      echo "${array[0]}"
-      #echo '##vso[task.setvariable variable=major]"${array[0]}"'
-      echo '##vso[task.setvariable variable=major]omg'
-
-      if ($(NODE_VERSION).split(".")[0] -gt 6) {
-        echo "please work"
+  - powershell: |
+      # Write your powershell commands here.
+      Write-Host "Hello World"
+      # Use the environment variables input below to pass secret variables to this script.
+      $rc = "7.10"
+      if ($rc.split(".")[0] -gt 4) {
+       Write-Host "pleasework"
       }
+     displayName: 'PowerShell Script'
 
-    displayName: "Get major version number of Node"
-    name: getver
+  #Get the version number of Node, so we can use it in conditions
+  #- script: |
+  ##    IFS='.' read -r -a array <<< "$(NODE_VERSION)"
+  #    echo "${array[0]}"
+      #echo '##vso[task.setvariable variable=major]"${array[0]}"'
+  #    echo '##vso[task.setvariable variable=major]omg'
+  #  displayName: "Get major version number of Node"
+  #  name: getver
   
-
-  - script: |
-      echo $(MAJOR)
-    displayName: "Output Major Node Version Number"
+  #- script: |
+  #    echo $(MAJOR)
+  #  displayName: "Output Major Node Version Number"
 
   - script: |
       exit 1
