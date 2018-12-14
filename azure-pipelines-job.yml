@@ -21,6 +21,9 @@ jobs:
   #Get the version number of Node, so we can use it in conditions
   - script: |
       echo '##vso[task.setvariable variable=major]$(NODE_VERSION)'
+      IFS='.' read -r -a array <<< "$(NODE_VERSION)"
+      echo "${array[0]}"
+
     displayName: "Get major version number of Node"
     name: getver
   
