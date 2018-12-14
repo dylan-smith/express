@@ -32,7 +32,6 @@ jobs:
         npm install --silent --save-dev mocha@3.5.3
       fi
     displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
-    condition: lt(variables['NODE_VERSION'].Major, 6)
 
   - script: |
       if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 4 ]]; then
