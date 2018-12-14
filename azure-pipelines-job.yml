@@ -11,7 +11,7 @@ jobs:
   displayName: "Node Version ${{parameters.NODE_VERSION}} using $(Agent.OS)"
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
-    MAJOR1: ${{parameters.NODE_VERSION}}
+    PLEASEWORK: ${{parameters.NODE_VERSION}}
     MAJOR2: "99"
 
   
@@ -32,7 +32,7 @@ jobs:
         Write-Host "In the if statement"
         Write-Host $rc2
         Write-Host $env:NODE_VERSION
-        Write-Host $env.MAJOR1
+        Write-Host $env.PLEASEWORK
         Write-Host $env.major1
         Write-Host '##vso[task.setvariable variable=MAJOR1]42'
         Write-Host $env.MAJOR1
