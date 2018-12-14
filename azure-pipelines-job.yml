@@ -26,14 +26,19 @@ jobs:
       if ($rc.split(".")[0] -gt 4) 
       {
         Write-Host "In the if statement"
-        Write-Host "$rc.split(".")[0]"
+        $rc2 = $rc.split(".")[0]
+        Write-Host $rc2
         Write-Host $env:NODE_VERSION
         Write-Host '##vso[task.setvariable variable=major1]42'
         Write-Host $env.MAJOR1
         Write-Host $env.major1
-        Write-Host '##vso[task.setvariable variable=major2]$rc'
+        Write-Host $(MAJOR1)
+        Write-Host $(major1)
+        Write-Host '##vso[task.setvariable variable=major2]$rc2'
         Write-Host $env.MAJOR2
         Write-Host $env.major2
+        Write-Host $(MAJOR2)
+        Write-Host $(major2)
       }
     displayName: "Please Work Powershell" 
     name: getversion
