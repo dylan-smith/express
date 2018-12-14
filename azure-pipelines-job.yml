@@ -19,7 +19,7 @@ jobs:
   #Before Install Scripts
 
   #Get the version number of Node, so we can use it in conditions
-  - powershell: |
+  - script: |
       echo '##vso[task.setvariable variable=nodeVersionNumber]$(NODE_VERSION')
     displayName: "Get major version number of Node"
 
