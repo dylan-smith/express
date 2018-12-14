@@ -32,7 +32,7 @@ jobs:
         Write-Host "In the if statement"
         Write-Host $rc2
         Write-Host $env:NODE_VERSION
-        Write-Host $env.PLEASEWORK
+        Write-Host $env.PLEASEWORKY
         Write-Host $env.major1
         Write-Host '##vso[task.setvariable variable=MAJOR1;isOutput=true]42'
         Write-Host $env.MAJOR1
@@ -45,13 +45,13 @@ jobs:
         Write-Host $env.major2
 
         Write-Host "so maybe"
-        $env.PLEASEWORK = "49"
-        Write-Host $env.PLEASEWORK
+        $env.PLEASEWORKY = "49"
+        Write-Host $env.PLEASEWORKY
        
       }
     displayName: "Please Work Powershell"     
     env:
-      PLEASEWORK: $(PLEASEWORK)
+      PLEASEWORKY: $(PLEASEWORK)
 
   #Get the version number of Node, so we can use it in conditions
   #- script: |
