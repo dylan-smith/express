@@ -33,9 +33,10 @@ jobs:
       Write-Host $major
       Write-Host $env:major
     displayName: "Get major version number of Node"
+    name: getver
 
   - script: |
-      echo $(NODE_VERSION)
+      echo $(getver.major)
     displayName: "Output Major Node Version Number"
 
   - script: |
