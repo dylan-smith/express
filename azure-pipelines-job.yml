@@ -11,7 +11,7 @@ jobs:
   displayName: "Node Version ${{parameters.NODE_VERSION}} using $(Agent.OS)"
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
-    MAJOR1: "0"
+    MAJOR1: ${{parameters.NODE_VERSION}}
     MAJOR2: "99"
 
   
