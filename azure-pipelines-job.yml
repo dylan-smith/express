@@ -1,5 +1,9 @@
 #For now comment out the other Linux versions
 #TODO: Add the ver 9 and 10 nightly builds and figure out how to let them fail
+
+parameters:
+   Allow_Failures: false
+
 jobs:
 - job: ${{parameters.Job_Name}}
   continueOnError: ${{ parameters.Allow_Failures }}
