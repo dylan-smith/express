@@ -11,6 +11,9 @@ jobs:
   displayName: "Node Version ${{parameters.NODE_VERSION}} using $(Agent.OS)"
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
+    MAJOR1: "0"
+    MAJOR2: "99"
+
   
   pool:
     vmImage: 'ubuntu-16.04'
@@ -29,16 +32,14 @@ jobs:
         $rc2 = $rc.split(".")[0]
         Write-Host $rc2
         Write-Host $env:NODE_VERSION
-        Write-Host '##vso[task.setvariable variable=major1]42'
+        Write-Host '##vso[task.setvariable variable=MAJOR1]42'
         Write-Host $env.MAJOR1
         Write-Host $env.major1
-        Write-Host $(MAJOR1)
-        Write-Host $(major1)
-        Write-Host '##vso[task.setvariable variable=major2]$rc2'
+        
+        Write-Host '##vso[task.setvariable variable=MAJOR2]$rc2'
         Write-Host $env.MAJOR2
         Write-Host $env.major2
-        Write-Host $(MAJOR2)
-        Write-Host $(major2)
+       
       }
     displayName: "Please Work Powershell" 
     name: getversion
