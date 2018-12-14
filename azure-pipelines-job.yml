@@ -27,31 +27,16 @@ jobs:
       # Use the environment variables input below to pass secret variables to this script.
       $rc = "7.10"
       $rc2 = $rc.split(".")[0]
-      if ($rc.split(".")[0] -gt 4) 
-      {
-        Write-Host "In the if statement"
-        Write-Host $rc2
-        Write-Host $env:NODE_VERSION
-        Write-Host $env.PLEASEWORKY
-        Write-Host $env.major1
-        Write-Host '##vso[task.setvariable variable=MAJOR1;isOutput=true]42'
-        Write-Host $env.MAJOR1
-        Write-Host $env.major1
-        
-        Write-Host $env.MAJOR2
-        Write-Host $env.major2
-        Write-Host '##vso[task.setvariable variable=MAJOR2;isOutput=true]$rc2'
-        Write-Host $env.MAJOR2
-        Write-Host $env.major2
 
-        Write-Host "so maybe"
-        $env.PLEASEWORKY = "49"
-        Write-Host $env.PLEASEWORKY
-       
-      }
+      Write-Host $rc2
+      Write-Host $env:NODE_VERSION
+
+      ##vso[task.setvariable variable=foo;isSecret=false;isOutput=true;]pleasework
+      Write-Host '##vso[task.setvariable variable=foo2;isSecret=false;isOutput=true;]pleasework2'
+      
     displayName: "Please Work Powershell"     
-    env:
-      PLEASEWORKY: $(PLEASEWORK)
+    name: myvars
+    
 
   #Get the version number of Node, so we can use it in conditions
   #- script: |
