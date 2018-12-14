@@ -23,8 +23,8 @@ jobs:
       Write-Host '##vso[task.setvariable variable=nodeVersionNumber]$env:nodejs_version.split(".")[0]'
     displayName: "Get major version number of Node"
 
-  - powershell: |
-      echo $(nodeVersionNumber)
+  - script: |
+      echo $(NODEVERSIONNUMBER)
     displayName: "Output Major Node Version Number"
 
   - script: |
