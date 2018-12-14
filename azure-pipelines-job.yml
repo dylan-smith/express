@@ -33,6 +33,9 @@ jobs:
 
       ##vso[task.setvariable variable=foo;isSecret=false;isOutput=true;]pleasework
       Write-Host '##vso[task.setvariable variable=foo2;isSecret=false;isOutput=true;]pleasework2'
+
+      Write-Host $env:foo
+      Write-Host $env:foo2
       
     displayName: "Please Work Powershell"     
     name: myvars
