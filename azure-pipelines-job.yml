@@ -6,11 +6,6 @@ parameters:
 
 jobs:
 - job: 
-  strategy:
-    maxParallel: 2
-    matrix:
-      Linux:
-        vmImage: 'ubuntu-16.04'
   continueOnError: ${{ parameters.Allow_Failures }}
   condition: succeededOrFailed()
   displayName: "Node Version ${{parameters.NODE_VERSION}} using $(Agent.OS)"
@@ -18,15 +13,19 @@ jobs:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
   
   pool:
-    vmImage: $(vmImage)
+    vmImage: 'ubuntu-16.04'
   
   steps:
   #Before Install Scripts
 
-  - script: |
-      echo $(vmImage)
-      echo $(Agent.OS)
-    displayName: "Echoing VM image name"
+  #Get the version number of Node, so we can use it in conditions
+  - ps: |
+      Write-Host '##vso[task.setvariable variable=nodeVersionNumber]$env:nodejs_version.split(".")[0]'
+    displayName: "Get major version number of Node"
+
+  - powershell: |
+      echo $(nodeVersionNumber)
+    displayName: "Output Major Node Version Number"
 
   - script: |
       exit 1
