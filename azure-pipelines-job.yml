@@ -24,6 +24,11 @@ jobs:
   #Before Install Scripts
 
   - script: |
+      echo $(vmImage)
+      echo $(Agent.OS)
+    displayName: "Echoing VM image name"
+
+  - script: |
       exit 1
     displayName: "Simulate build failure"
     condition: eq(variables['NODE_VERSION'], '8.12')
