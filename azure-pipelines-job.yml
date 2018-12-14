@@ -23,7 +23,8 @@ jobs:
       Write-Host "Hello World"
       # Use the environment variables input below to pass secret variables to this script.
       $rc = "7.10"
-      if ($rc.split(".")[0] -gt 4) {
+      if ($rc.split(".")[0] -gt 4) 
+      {
        Write-Host "pleasework"
       }
      displayName: 'PowerShell Script'
