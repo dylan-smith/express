@@ -24,7 +24,7 @@ jobs:
   #  displayName: "Get major version number of Node"
   - powershell: |
       $rc = $env:NODE_VERSION
-      Write-Host '##vso[task.setvariable variable=major;isOutput=true]$rc'
+      Write-Host '##vso[task.setvariable variable=major;isOutput=true]($rc)'
       #Write-HOst $env:NODE_VERSION
       Write-HOst $rc
     displayName: "Get major version number of Node"
