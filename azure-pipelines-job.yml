@@ -50,6 +50,8 @@ jobs:
        
       }
     displayName: "Please Work Powershell"     
+    env:
+      PLEASEWORK: $(PLEASEWORK)
 
   #Get the version number of Node, so we can use it in conditions
   #- script: |
