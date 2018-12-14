@@ -20,7 +20,7 @@ jobs:
 
   #Get the version number of Node, so we can use it in conditions
   - powershell: |
-      Write-Host '##vso[task.setvariable variable=nodeVersionNumber]$env:nodejs_version.split(".")[0]'
+      Write-Host '##vso[task.setvariable variable=nodeVersionNumber]$env:NODE_VERSION.split(".")[0]'
     displayName: "Get major version number of Node"
 
   - script: |
