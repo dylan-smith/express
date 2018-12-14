@@ -27,6 +27,7 @@ jobs:
       Write-Host $env:AGENT_HOMEDIRECTORY
       Write-Host $nodeVersionNumber
       Write-Host $env:NODEVERSIONNUMBER
+      Write-HOst $env:NODE_VERSION
     displayName: "Get major version number of Node"
 
   - script: |
