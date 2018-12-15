@@ -66,6 +66,6 @@ steps:
       npm rebuild
     }
   displayName: 'Testing some powershell to see if I can replace a script with it.'
-  condition: eq(Test-Path -Path node_modules, true)
+  condition: eq('Test-Path -Path node_modules', true)
 
 #Finish With Before Install Tasks. Time to install dependencies
