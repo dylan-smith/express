@@ -11,14 +11,37 @@ steps:
     Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
     Write-Host $(Agent.OS) 
       
-  displayName: "Output Test"    
+  displayName: "Output Test1"    
+
+
 
 - powershell: |
     Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
     Write-Host "My statement was true"
       
-  displayName: "Output Test"
-  condition: eq(variables['$env:OUTPUTVAR1'], 5)
+  displayName: "Output Test2"
+  condition: eq(variables['env:OUTPUTVAR1'], 5)
+
+- powershell: |
+    Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
+    Write-Host "My statement was true"
+      
+  displayName: "Output Test3"
+  condition: eq(variables['OUTPUTVAR1'], 5)
+
+- powershell: |
+    Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
+    Write-Host "My statement was true"
+      
+  displayName: "Output Test4"
+  condition: eq(variables['OutputVar1'], 5)
+
+- powershell: |
+    Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
+    Write-Host "My statement was true"
+      
+  displayName: "Output Test5"
+  condition: eq(variables['env.OutputVar1'], 5)
 
 #Start The Before Install Tasks
 #- script: |
