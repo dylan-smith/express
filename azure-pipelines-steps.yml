@@ -1,3 +1,4 @@
+#TODO: Add Coveralls step
 steps:
 - powershell: |
     $rc = "$(NODE_VERSION)"
@@ -51,29 +52,38 @@ steps:
   displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
   condition: lt(variables['OUTPUTVAR1'], 4)
     
-- script: |
-    if [[ -d node_modules ]]; then
-      npm prune
-      npm rebuild
-    fi
-  displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
-
-# 
 - powershell: |
-    $rc = Test-Path -Path node_modules22
+    $rc = Test-Path -Path node_modules
     Write-Host $rc
     Write-Output ("##vso[task.setvariable variable=nodemodulesexist;]$rc")
-   
-  displayName: "TESTING"  
-
+  displayName: "Test-Path -Path node_modules - sets an environment variable"  
 
 - powershell: |
     # Prune & rebuild node_modules
-    if (Test-Path -Path node_modules) {
       npm prune
       npm rebuild
-    }
-  displayName: 'Testing some powershell to see if I can replace a script with it.'
+  displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
   condition: eq(variables['NODEMODULESEXIST'], True)
 
 #Finish With Before Install Tasks. Time to install dependencies
+
+#These two steps are required because the language command in Travis sets the node version, 
+#and also does an npm install and an npm test
+- task: NodeTool@0
+  displayName: 'Node Tool install $(NODE_VERSION)'
+  inputs:
+    versionSpec: '$(NODE_VERSION)'
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: false
+
+#Testing
+- script: |
+    npm run test-ci
+  displayName: 'Run test script'
+
+- script: |
+    npm run lint
+  displayName: 'Run linting'
