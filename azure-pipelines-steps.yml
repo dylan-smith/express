@@ -69,7 +69,7 @@ steps:
 
 - powershell: |
     # Prune & rebuild node_modules
-    if (Test-Path -Path node_modules) {
+    if (Test-Path -Path node_modules22) {
       npm prune
       npm rebuild
     }
