@@ -8,7 +8,7 @@ jobs:
       Node0.12:
         NODE_VERSION: '0.12'
       Node1.8:
-        NODE_VERSION: '1.8'
+        NODE_VERSION: '1.8.x'
       Node2.5:
         NODE_VERSION: '2.5'
       Node3.3:
@@ -56,7 +56,7 @@ jobs:
     maxParallel: 10
     matrix:
       Node0.10:
-        NODE_VERSION: '0.10'
+        NODE_VERSION: '0.10.'
       Node0.12:
         NODE_VERSION: '0.12'
       Node1.8:
