@@ -29,7 +29,7 @@ jobs:
 
   - powershell: |
       Write-host $env:OUTPUTVAR1
-      Write-Host $(Agent.PS)
+      Write-Host $(Agent.OS)
       
     displayName: "Get Ma"     
     
