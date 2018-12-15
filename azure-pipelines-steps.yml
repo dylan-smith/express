@@ -6,13 +6,12 @@ steps:
    
   displayName: "Get Major Version Number Using PowerShell"     
 
-#ultimately this two tasks can be removed they are here just for testing
+#ultimately this three tasks can be removed they are here just for testing
 - powershell: |
     Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
     Write-Host $(Agent.OS) 
       
   displayName: "Output Test1"    
-
 
 - powershell: |
     Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
@@ -30,33 +29,33 @@ steps:
 
 
 #Start The Before Install Tasks
-#- script: |
-    #npm config set shrinkwrap false
-  #displayName: 'Configure npm: Skip updating shrinkwrap / lock'
-#
-#- script: |
-    #npm rm --silent --save-dev connect-redis
-  #displayName: 'Remove all non-test dependencies: Remove example dependencies'
-#
-#- script: |
-    ##if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 6 ]]; then
-      #npm install --silent --save-dev mocha@3.5.3
-    ##fi
-  #displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
-  #condition: lt(variables['$env:OUTPUTVAR1'], 6)
-#
-#
-#- script: |
+- script: |
+    npm config set shrinkwrap false
+  displayName: 'Configure npm: Skip updating shrinkwrap / lock'
+
+- script: |
+    npm rm --silent --save-dev connect-redis
+  displayName: 'Remove all non-test dependencies: Remove example dependencies'
+
+- script: |
+    #if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 6 ]]; then
+      npm install --silent --save-dev mocha@3.5.3
+    #fi
+  displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+  condition: lt(variables['OUTPUTVAR1'], 6)
+
+- script: |
     #if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 4 ]]; then
-      #npm install --silent --save-dev supertest@2.0.0
+      npm install --silent --save-dev supertest@2.0.0
     #fi
-  #displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
-#    
-#- script: |
-    #if [[ -d node_modules ]]; then
-      #npm prune
-      #npm rebuild
-    #fi
-  #displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
+  displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
+  condition: lt(variables['OUTPUTVAR1'], 4)
+    
+- script: |
+    if [[ -d node_modules ]]; then
+      npm prune
+      npm rebuild
+    fi
+  displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
 
 #Finish With Before Install Tasks. Time to install dependencies
