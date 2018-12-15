@@ -8,7 +8,7 @@ jobs:
       Node0.12:
         NODE_VERSION: '0.12'
       Node1.8:
-        NODE_VERSION: '1.8.x'
+        NODE_VERSION: '1.8'
       Node2.5:
         NODE_VERSION: '2.5'
       Node3.3:

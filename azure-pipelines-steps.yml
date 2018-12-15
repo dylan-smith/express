@@ -69,10 +69,15 @@ steps:
 
 #These two steps are required because the language command in Travis sets the node version, 
 #and also does an npm install and an npm test
-- task: NodeTool@0
-  displayName: 'Node Tool install $(NODE_VERSION)'
-  inputs:
-    versionSpec: '$(NODE_VERSION)'
+#- task: NodeTool@0
+#  displayName: 'Node Tool install $(NODE_VERSION)'
+#  inputs:
+#    versionSpec: '$(NODE_VERSION)'
+
+- script: |
+    nvm install $(NODE_VERSION)
+  displayName: 'Node Tool install $(NODE_VERSION) using NVM'
+  
 
 - task: Npm@1
   displayName: 'npm install'
