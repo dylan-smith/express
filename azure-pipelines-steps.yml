@@ -58,14 +58,22 @@ steps:
     fi
   displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
 
-# Update Node.js modules
+# 
 - powershell: |
+    $rc = "Test-Path -Path node_modules"
+    Write-Host $rc
+    Write-Output ("##vso[task.setvariable variable=nodemodulesexist;]$rc")
+   
+  displayName: "TESTING"  
+
+
+#- powershell: |
     # Prune & rebuild node_modules
-    if (Test-Path -Path node_modules) {
-      npm prune
-      npm rebuild
-    }
-  displayName: 'Testing some powershell to see if I can replace a script with it.'
-  condition: eq('Test-Path -Path node_modules', true)
+#    if (Test-Path -Path node_modules) {
+#      npm prune
+#      npm rebuild
+#    }
+#  displayName: 'Testing some powershell to see if I can replace a script with it.'
+#  condition: eq('Test-Path -Path node_modules', true)
 
 #Finish With Before Install Tasks. Time to install dependencies
