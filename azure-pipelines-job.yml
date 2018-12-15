@@ -28,7 +28,7 @@ jobs:
     displayName: "Please Work Powershell"     
 
   - powershell: |
-      Write-host $env:OutputVar1
+      Write-host $env:OUTPUTVAR1
       
     displayName: "Please Work Powershell2"     
     
