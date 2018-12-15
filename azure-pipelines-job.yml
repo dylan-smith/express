@@ -19,7 +19,7 @@ jobs:
   #Before Install Scripts
 
   - powershell: |
-      $rc = $(NODE_VERSION)
+      $rc = "$(NODE_VERSION)"
 
       $rc2 = $rc.split(".")[0]
 
