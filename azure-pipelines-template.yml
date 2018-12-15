@@ -33,6 +33,7 @@ jobs:
       NODE_VERSION: $(NODE_VERSION)
 
 - job: BuildLinuxOS_CanFailVersions
+  dependsOn: BuildLinuxOS_MustPassVersions
   strategy:
     maxParallel: 10
     matrix:
