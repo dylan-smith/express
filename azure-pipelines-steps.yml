@@ -58,4 +58,13 @@ steps:
     fi
   displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
 
+# Update Node.js modules
+- powershell: |
+    # Prune & rebuild node_modules
+    if (Test-Path -Path node_modules) {
+      npm prune
+      npm rebuild
+    }
+  displayName: 'Testing some powershell to see if I can replace a script with it.'
+
 #Finish With Before Install Tasks. Time to install dependencies
