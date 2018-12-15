@@ -11,9 +11,6 @@ jobs:
   displayName: "Node Version ${{parameters.NODE_VERSION}} using $(Agent.OS)"
   variables:
     NODE_VERSION: ${{parameters.NODE_VERSION}}
-    PLEASEWORK: ${{parameters.NODE_VERSION}}
-    MAJOR2: "99"
-
   
   pool:
     vmImage: 'ubuntu-16.04'
@@ -22,36 +19,19 @@ jobs:
   #Before Install Scripts
 
   - powershell: |
-      # Write your powershell commands here.
-      Write-Host "Hello World"
-      # Use the environment variables input below to pass secret variables to this script.
       $rc = "7.10"
+
       $rc2 = $rc.split(".")[0]
 
-      Write-Host $rc2
-      Write-Host $env:NODE_VERSION
-
-      ##vso[task.setvariable variable=foo;isSecret=false;isOutput=true;]pleasework
-      Write-Host '##vso[task.setvariable variable=foo2;isSecret=false;isOutput=true;]pleasework2'
-
-      Write-Host $env:myvars.foo
-      Write-Host $env:myvars.foo2
+      Write-Output ("##vso[task.setvariable variable=OutputVar1;]$rc2")
       
     displayName: "Please Work Powershell"     
-    name: myvars
 
   - powershell: |
-      # Write your powershell commands here.
-      Write-Host "Hello World2"
-      # Use the environment variables input below to pass secret variables to this script.
-      Write-Host $env:myvars.foo
-      Write-Host $env:myvars.foo2
-
-      ##vso[task.setvariable variable=foo;isSecret=false;isOutput=true;]pleasework
-      Write-Host '##vso[task.setvariable variable=foo2;isSecret=false;isOutput=true;]pleasework2'
+      Write-host $env:OutputVar1
       
     displayName: "Please Work Powershell2"     
-    name: myvars2
+    
     
 
   #Get the version number of Node, so we can use it in conditions
