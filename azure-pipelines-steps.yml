@@ -60,7 +60,7 @@ steps:
 
 # 
 - powershell: |
-    $rc = "Test-Path -Path node_modules"
+    $rc = Test-Path -Path node_modules
     Write-Host $rc
     Write-Output ("##vso[task.setvariable variable=nodemodulesexist;]$rc")
    
