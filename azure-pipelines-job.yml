@@ -25,12 +25,13 @@ jobs:
 
       Write-Output ("##vso[task.setvariable variable=OutputVar1;]$rc2")
       
-    displayName: "Please Work Powershell"     
+    displayName: "Get Major Version Number Using PowerShell"     
 
   - powershell: |
       Write-host $env:OUTPUTVAR1
+      Write-Host $(Agent.PS)
       
-    displayName: "Please Work Powershell2"     
+    displayName: "Get Ma"     
     
     
 
