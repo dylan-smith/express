@@ -52,3 +52,11 @@ steps:
 - script: |
     npm run lint
   displayName: 'Run linting'
+
+- script: |
+    npm install --save-dev coveralls@2.10.0
+    node_modules/.bin/coveralls < ./coverage/lcov.info
+  displayName: 'Upload coverage to coveralls'
+  env:
+    COVERALLS_REPO_TOKEN: $(coveralls.key.mickey)
+    COVERALLS_SERVICE_NAME: 'AzureDevOps'
