@@ -2,9 +2,9 @@
 #TODO: Publish coversalls files, just because
 steps:
 - powershell: |
-    $rc = "$(NODE_VERSION)"
-    $rc2 = $rc.split(".")[0]
-    Write-Output ("##vso[task.setvariable variable=OutputVar1;]$rc2")
+    $nodeVersion = "$(NODE_VERSION)"
+    $nodeMajorVersion = $nodeVersion.split(".")[0]
+    Write-Output ("##vso[task.setvariable variable=NodeMajorVersion;]$nodeMajorVersion")
   displayName: "Get Major Version Number of NodeJS Using PowerShell"     
 
 #Start The Before Install Tasks
@@ -16,11 +16,11 @@ steps:
 
 - script: npm install --silent --save-dev mocha@3.5.3
   displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
-  condition: lt(variables['OUTPUTVAR1'], 6)
+  condition: lt(variables['NodeMajorVersion'], 6)
 
 - script: npm install --silent --save-dev supertest@2.0.0
   displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
-  condition: lt(variables['OUTPUTVAR1'], 4)
+  condition: lt(variables['NodeMajorVersion'], 4)
     
 - powershell: |
     # Prune & rebuild node_modules
