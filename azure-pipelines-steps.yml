@@ -1,5 +1,3 @@
-#TODO: Add Coveralls step, just for Linux
-#TODO: Publish coversalls files, just because
 steps:
 - powershell: |
     $nodeVersion = "$(NODE_VERSION)"
