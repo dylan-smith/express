@@ -1,0 +1,129 @@
+#For now comment out the other Linux versions
+#TODO: Add the ver 9 and 10 nightly builds and figure out how to let them fail
+jobs:
+- job: BuildLinuxOS
+  strategy:
+    maxParallel: 10
+    matrix:
+      #Node0.10:
+        #NODE_VERSION: '0.10'
+      #Node0.12:
+        #NODE_VERSION: '0.12'
+      #Node1.8:
+        #NODE_VERSION: '1.8'
+      #Node2.5:
+        #NODE_VERSION: '2.5'
+      #Node3.3:
+        #NODE_VERSION: '3.3'
+      #Node4.9:
+        #NODE_VERSION: '4.9'
+      #Node5.12:
+        #NODE_VERSION: '5.12'
+      #Node6.14:
+        #NODE_VERSION: '6.14'
+      #Node7.10:
+        #NODE_VERSION: '7.10'
+      Node8.12:
+        NODE_VERSION: '8.12'
+      Node9:
+        NODE_VERSION: '9.x'
+
+  pool:
+    vmImage: 'ubuntu-16.04'
+   
+    
+  steps:
+  #Before Install Scripts
+
+  - script: |
+      npm config set shrinkwrap false
+    displayName: 'Configure npm: Skip updating shrinkwrap / lock'
+
+  - script: |
+      npm rm --silent --save-dev connect-redis
+    displayName: 'Remove all non-test dependencies: Remove example dependencies'
+
+  - script: |
+      if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 6 ]]; then
+        npm install --silent --save-dev mocha@3.5.3
+      fi
+    displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+
+  - script: |
+      if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 4 ]]; then
+        npm install --silent --save-dev supertest@2.0.0
+      fi
+    displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
+    
+  - script: |
+      if [[ -d node_modules ]]; then
+        npm prune
+        npm rebuild
+      fi
+    displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
+
+  #Finished With Before Install. Time to install dependencies
+
+  #These two steps are required because the language command in Travis sets the node version, 
+  #and also does an npm install and an npm test
+  - task: NodeTool@0
+    displayName: 'Node Tool install $(NODE_VERSION)'
+    inputs:
+      versionSpec: '$(NODE_VERSION)'
+      
+
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      verbose: false
+
+  #TODO: This step may not be needed, as it seems to partially duplicate the npm run test-ci step.
+  #- script: |
+  #    npm test
+  #  displayName: 'npm test'
+  #  continueOnError: $[eq(variables['CanFail'], true)]
+
+  #Testing
+  - script: |
+      npm run test-ci
+    displayName: 'Run test script'
+  #  continueOnError: $[eq(variables['CanFail'], true)]
+
+  - script: |
+      npm run lint
+    displayName: 'Run linting'
+  #  continueOnError: $[eq(variables['CanFail'], true)]
+
+    #after_script:
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    displayName: 'Replace tokens in **/.coveralls.yml'
+    inputs:
+      targetFiles: '.coveralls.yml'
+
+      keepToken: true
+
+      tokenPrefix: '___'
+
+      tokenSuffix: '___'
+    
+
+  - script: |
+      npm install --save-dev coveralls@2.10.0
+      node_modules/.bin/coveralls < ./coverage/lcov.info
+    displayName: 'Upload coverage to coveralls'
+    
+
+  #Copy coverage artifacts to staging and publish them
+  - task: CopyFiles@2
+    displayName: 'Copy coverage Files To Staging'
+    inputs:
+      SourceFolder: '$(build.sourcesdirectory)/coverage'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+
+#TODO:  Need to add a publish test results, potentially? I don't know how helpful it will be.
+#I don't think there are actual test results to publish.

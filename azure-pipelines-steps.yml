@@ -1,69 +1,34 @@
-#TODO: Add Coveralls step
+#TODO: Add Coveralls step, just for Linux
+#TODO: Publish coversalls files, just because
 steps:
 - powershell: |
     $rc = "$(NODE_VERSION)"
     $rc2 = $rc.split(".")[0]
     Write-Output ("##vso[task.setvariable variable=OutputVar1;]$rc2")
-   
-  displayName: "Get Major Version Number Using PowerShell"     
-
-#ultimately this three tasks can be removed they are here just for testing
-- powershell: |
-    Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
-    Write-Host $(Agent.OS) 
-      
-  displayName: "Output Test1"    
-
-- powershell: |
-    Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
-    Write-Host "My statement was true"
-      
-  displayName: "Output Test3"
-  condition: lt(variables['OUTPUTVAR1'], 6)
-
-- powershell: |
-    Write-host $env:OUTPUTVAR1 #This is how you output for LINUX usine $env.OutputVar1 for windows
-    Write-Host "My statement was true"
-      
-  displayName: "Output Test4"
-  condition: lt(variables['OutputVar1'], 6)
-
+  displayName: "Get Major Version Number of NodeJS Using PowerShell"     
 
 #Start The Before Install Tasks
-- script: |
-    npm config set shrinkwrap false
+- script: npm config set shrinkwrap false
   displayName: 'Configure npm: Skip updating shrinkwrap / lock'
 
-- script: |
-    npm rm --silent --save-dev connect-redis
+- script: npm rm --silent --save-dev connect-redis
   displayName: 'Remove all non-test dependencies: Remove example dependencies'
 
-- script: |
-    #if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 6 ]]; then
-      npm install --silent --save-dev mocha@3.5.3
-    #fi
+- script: npm install --silent --save-dev mocha@3.5.3
   displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
   condition: lt(variables['OUTPUTVAR1'], 6)
 
-- script: |
-    #if [[ "$(cut -d. -f1 <<< "$(NODE_VERSION)")" -lt 4 ]]; then
-      npm install --silent --save-dev supertest@2.0.0
-    #fi
+- script: npm install --silent --save-dev supertest@2.0.0
   displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
   condition: lt(variables['OUTPUTVAR1'], 4)
     
 - powershell: |
-    $rc = Test-Path -Path node_modules
-    Write-Host $rc
-    Write-Output ("##vso[task.setvariable variable=nodemodulesexist;]$rc")
-  displayName: "Test-Path -Path node_modules - sets an environment variable"  
-
-- powershell: |
     # Prune & rebuild node_modules
-      npm prune
-      npm rebuild
+    if (Test-Path -Path node_modules) {
+        npm prune
+        npm rebuild
+      }
   displayName: 'Setup Node.js version-specific dependencies: Update Node.js modules: Prune and rebuild node_modules'
-  condition: eq(variables['NODEMODULESEXIST'], True)
 
 #Finish With Before Install Tasks. Time to install dependencies
 
