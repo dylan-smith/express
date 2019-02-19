@@ -5,7 +5,7 @@ steps:
     Write-Output ("##vso[task.setvariable variable=NodeMajorVersion;]$nodeMajorVersion")
   displayName: "Get Major Version Number of NodeJS Using PowerShell"     
 
-#Start The Before Install Tasks
+#Start The Before Install Tasks 
 - script: npm config set shrinkwrap false
   displayName: 'Skip updating shrinkwrap / lock'
 

@@ -33,23 +33,23 @@ jobs:
     parameters:
       NODE_VERSION: $(NODE_VERSION)
 
-#- job: Linux_CanFail
-  #dependsOn: Linux_MustPass
-  #strategy:
-    #maxParallel: 10
-    #matrix:
-      #Node 9.x:
-        #NODE_VERSION: '9.x'
-      #Node 10.x:
-        #NODE_VERSION: '10.x'
-  #continueOnError: true
-  #pool:
-    #vmImage: 'ubuntu-16.04'
-#
-  #steps:
-  #- template: "azure-pipelines-steps.yml"
-    #parameters:
-      #NODE_VERSION: $(NODE_VERSION)
+- job: Linux_CanFail
+  dependsOn: Linux_MustPass
+  strategy:
+    maxParallel: 10
+    matrix:
+      Node 9.x:
+        NODE_VERSION: '9.x'
+      Node 10.x:
+        NODE_VERSION: '10.x'
+  continueOnError: true
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  steps:
+  - template: "azure-pipelines-steps.yml"
+    parameters:
+      NODE_VERSION: $(NODE_VERSION)
 
 
 - job: Windows_MustPass
