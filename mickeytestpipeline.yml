@@ -1,0 +1,27 @@
+jobs:
+- job: Linux_MustPass
+  strategy:
+    maxParallel: 10
+    matrix:
+      Node 0.10:
+        NODE_VERSION: '0.12'
+  continueOnError: false
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  steps:
+  - powershell: |
+      $nodeVersion = "$(NODE_VERSION)"
+      $nodeMajorVersion = $nodeVersion.split(".")[0]
+      Write-Output ("##vso[task.setvariable variable=NodeMajorVersion;]$nodeMajorVersion")
+    displayName: "Get Major Version Number of NodeJS Using PowerShell"
+
+  - script: node --version
+    displayName: "Node Version"
+
+  - script: npm --version
+    displayName: "NPM Version"
+
+  - script: nvm --version
+    displayName: "nvm version"
+
