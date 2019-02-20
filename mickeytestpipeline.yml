@@ -36,6 +36,10 @@ jobs:
       nvm use 1.8
     displayName: "Install node version using nvm"
 
+  - script: |
+      which node
+    displayName: "TESTING"
+
   - script: node --version
     displayName: "Node Version"
 
