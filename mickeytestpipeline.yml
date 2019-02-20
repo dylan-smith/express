@@ -36,6 +36,7 @@ jobs:
 
   
   - script: |
+      node --version
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
@@ -58,9 +59,11 @@ jobs:
 
   #Start The Before Install Tasks 
   - script: |
+      node --version
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm config set shrinkwrap false
     displayName: 'Skip updating shrinkwrap / lock'
 
@@ -68,6 +71,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm rm --silent --save-dev connect-redis
     displayName: 'Remove all non-test dependencies'
 
@@ -75,6 +79,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm install --silent --save-dev mocha@3.5.3
     displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
     condition: lt(variables['NodeMajorVersion'], 6)
@@ -83,6 +88,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm install --silent --save-dev supertest@2.0.0
     displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
     condition: lt(variables['NodeMajorVersion'], 4)
@@ -90,6 +96,7 @@ jobs:
   - powershell: |
       # Prune & rebuild node_modules
       if (Test-Path -Path node_modules) {
+          node --version
           npm prune
           npm rebuild
         }
@@ -101,6 +108,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm install
     displayName: 'npm install'
     
@@ -109,6 +117,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm run test-ci
     displayName: 'Run test script'
 
@@ -116,13 +125,12 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm run lint
     displayName: 'Run linting'
 
   - script: |
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      node --version
       npm install --save-dev coveralls@2.10.0
       node_modules/.bin/coveralls < ./coverage/lcov.info
     displayName: 'Upload coverage to coveralls'
