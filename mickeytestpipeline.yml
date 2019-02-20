@@ -3,8 +3,8 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 0.12:
-        NODE_VERSION: '0.12'
+      Node 1.8:
+        NODE_VERSION: '1.8'
   continueOnError: false
   pool:
     vmImage: 'ubuntu-16.04'
@@ -32,7 +32,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-      nvm install 0.12
+      nvm install 1.8
     displayName: "Install node version using nvm"
 
   - script: node --version
