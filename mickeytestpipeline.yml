@@ -17,9 +17,8 @@ jobs:
     displayName: "Get Major Version Number of NodeJS Using PowerShell"
 
   - script: |
-      curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh -o install.sh | bash
-      source ~/.profile
-      nvm ls-remote
+      curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh -o install.sh
+      ls
     displayName: "Install NVM"
 
   - script: node --version
