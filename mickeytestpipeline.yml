@@ -38,7 +38,11 @@ jobs:
 
   - script: |
       which node
-    displayName: "TESTING"
+    displayName: "Which Node"
+
+  - script: |
+      npm config list
+    displayName: "NPM Config List"
 
   - script: node --version
     displayName: "Node Version"
