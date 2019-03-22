@@ -27,6 +27,7 @@ jobs:
     inputs:
       archiveFilePatterns: "$(agent.tempDirectory)\\tmp\\nvm-noinstall.zip"
       destinationFolder: "$(agent.tempDirectory)"
+      cleanDestinationFolder: false
 
   - script: |
       nvm install $NODE_VERSION
