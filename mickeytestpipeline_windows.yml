@@ -18,7 +18,7 @@ jobs:
 
   - powershell: |
       Invoke-WebRequest -Uri "https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-noinstall.zip" -OutFile "$env:HOMEPATH\nvm-noinstall.zip"
-      #Write-Output ("##vso[task.prependpath]$env:HOMEPATH")
+      ##Write-Output ("##vso[task.prependpath]$env:HOMEPATH")
 
   - task: ExtractFiles@1
     displayName: 'Extract files  Please Work'
