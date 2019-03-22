@@ -21,12 +21,15 @@ jobs:
       dir "$(agent.tempDirectory)"
       New-Item -Path "$(agent.tempDirectory)" -Name "tmp" -ItemType "directory"
       Invoke-WebRequest -Uri "https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-noinstall.zip" -OutFile (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "nvm-noinstall.zip")
+      $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
+      $mypath
+      Write-Output ("##vso[task.prependpath]"$mypath")
 
   - task: ExtractFiles@1
     displayName: 'Extract files  Please Work'
     inputs:
       archiveFilePatterns: "$(agent.tempDirectory)\\tmp\\nvm-noinstall.zip"
-      destinationFolder: "$(agent.tempDirectory)"
+      destinationFolder: "$(agent.tempDirectory)\\tmp"
       cleanDestinationFolder: false
 
   - script: |
