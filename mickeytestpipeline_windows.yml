@@ -17,9 +17,9 @@ jobs:
     displayName: "Get Major Version Number of NodeJS Using PowerShell"
 
   - powershell: |
-      Write-Output $env:HOMEPATH
-      dir "$env:HOMEPATH"
-      Invoke-WebRequest -Uri "https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-noinstall.zip" -OutFile (Join-Path "$env:HOMEPATH" "nvm-noinstall.zip")
+      Write-Output $(agent.tempDirectory)
+      dir "$(agent.tempDirectory)"
+      Invoke-WebRequest )-Uri "https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-noinstall.zip" -OutFile (Join-Path "$(agent.tempDirectory)" "nvm-noinstall.zip")
       ##Write-Output ("##vso[task.prependpath]$env:HOMEPATH")
 
   - task: ExtractFiles@1
