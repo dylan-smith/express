@@ -19,7 +19,7 @@ jobs:
   - powershell: |
       Invoke-WebRequest -Uri "https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-noinstall.zip" -OutFile "$env:HOMEPATH\nvm-noinstall.zip"
       Write-Output ("##vso[task.prependpath]$env:HOMEPATH")
-    displayname: "Using PS to get NPM Install For Windows - Please work"
+    displayname: "download NVM for Windows and set path"
 
   - task: ExtractFiles@1
     displayName: 'Extract files  Please Work'
