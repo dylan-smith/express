@@ -50,7 +50,7 @@ jobs:
       Write-Output "c drive path"
       dir "c:\"
       Write-Output "outputing settings file"
-      more settings.txt
+      more c:\settings.txt
     displayName: "Create settings file"
 
   - script: |
