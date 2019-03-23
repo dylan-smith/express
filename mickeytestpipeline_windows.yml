@@ -49,6 +49,8 @@ jobs:
       dir $mypath
       Write-Output "c drive path"
       dir "c:\"
+      Write-Output "outputing settings file"
+      more settings.txt
     displayName: "Create settings file"
 
   - script: |
