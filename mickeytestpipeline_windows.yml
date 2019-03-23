@@ -45,8 +45,10 @@ jobs:
       $mysettingsfile = (Join-Path "$mypath" "settings.txt")
       $mysettingsfile
       Add-Content $mysettingsfile "root: $mypath`npath: C:\Program Files\nodejs"
+      copy $mysettingsfile "c:\"
       dir $mypath
-      more $mysettingsfile
+      Write-Output "c drive path"
+      dir "c:\"
     displayName: "Create settings file"
 
   - script: |
