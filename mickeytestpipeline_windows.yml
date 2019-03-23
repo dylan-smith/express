@@ -42,11 +42,11 @@ jobs:
 
   - powershell: |
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
-      $mysettingsfile = (Join-Path "c:\" "settings.txt")
+      $mysettingsfile = (Join-Path "$mypath" "settings.txt")
       $mysettingsfile
       Add-Content $mysettingsfile "root: $mypath`npath: C:\Program Files\nodejs"
-      dir c:\
-      more c:\settings.txt
+      dir $mypath
+      more $mysettingsfile
     displayName: "Create settings file"
 
   - script: |
