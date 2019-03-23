@@ -41,10 +41,11 @@ jobs:
     displayName: "Printing Path and setting path variable"
 
   - powershell: |
-      Push-Location env:
-      (ls path).value.split(";")
-      Pop-Location
-    displayName: "Printing Path Again and Hope nvm is there"
+      $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
+      $mysettingsfile = (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "settings.txt")
+      Add-Content $mysettingsfile "root: $mypath`npath: C:\Program Files\nodejs"
+      dir $mypath
+    displayName: "Create settings file"
 
   - script: |
       nvm install $NODE_VERSION
