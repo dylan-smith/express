@@ -36,7 +36,15 @@ jobs:
       Push-Location env:
       (ls path).value.split(";")
       Pop-Location
-    displayName: "Printing Path"
+      $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
+      [Environment]::SetEnvironmentVariable("Path", $env:Path + ";$mypath", [EnvironmentVariableTarget]::Machine)
+    displayName: "Printing Path and setting path variable"
+
+  - powershell: |
+      Push-Location env:
+      (ls path).value.split(";")
+      Pop-Location
+    displayName: "Printing Path Again and Hope nvm is there"
 
   - script: |
       nvm install $NODE_VERSION
