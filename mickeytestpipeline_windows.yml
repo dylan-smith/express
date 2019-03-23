@@ -32,6 +32,12 @@ jobs:
       destinationFolder: "$(agent.tempDirectory)\\tmp"
       cleanDestinationFolder: false
 
+  - powershell: |
+      Push-Location env:
+      (ls path).value.split(";")
+      Pop-Location
+    displayName: "Printing Path"
+
   - script: |
       nvm install $NODE_VERSION
       nvm use $NODE_VERSION
