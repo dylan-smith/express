@@ -124,10 +124,6 @@ jobs:
     displayName: 'Run linting'
 
   - script: |
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-      nvm use $NODE_VERSION
       npm install --save-dev coveralls@2.10.0
       node_modules/.bin/coveralls < ./coverage/lcov.info
     displayName: 'Upload coverage to coveralls'
