@@ -22,7 +22,8 @@ jobs:
       New-Item -Path "$(agent.tempDirectory)" -Name "tmp" -ItemType "directory"
       Invoke-WebRequest -Uri "https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-noinstall.zip" -OutFile (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "nvm-noinstall.zip")
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
-      $mypath
+      Write-Output ("##vso[task.prependpath]$mypath")
+      Write-Output ("My Path:")
       Write-Output ("##vso[task.prependpath]$mypath")
 
   - task: ExtractFiles@1
@@ -42,9 +43,12 @@ jobs:
 
   - powershell: |
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
+      Write-Output("My Path:")
+      $mypath
       $mysettingsfile = (Join-Path "$mypath" "settings.txt")
+      Write-Output("My settings file:")
       $mysettingsfile
-      Add-Content $mysettingsfile "root: $mypath`npath: C:\Program Files\nodejs"
+      Add-Content $mysettingsfile "root\: $mypath`r`npath\: C:\Program Files\nodejs"
       copy $mysettingsfile "c:\"
       dir $mypath
       Write-Output "c drive path"
