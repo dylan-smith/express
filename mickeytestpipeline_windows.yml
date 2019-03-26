@@ -52,7 +52,7 @@ jobs:
       Write-Output("My Path:")
       $mypath
       $mysettingsfile = (Join-Path "$mypath" "settings.txt")
-      Write-Output("My settings file:")
+      Write-Output("My settings files:")
       $mysettingsfile
       Add-Content $mysettingsfile "root: $mypath`r`npath: C:\Program Files\nodejs"
       copy $mysettingsfile "c:\"
