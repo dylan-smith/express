@@ -61,9 +61,9 @@ jobs:
     displayName: "Create settings file"
 
   - script: |
-      nvm
-      #nvm install $NODE_VERSION
-      #nvm use $NODE_VERSION
+      nvm version
+      nvm install $NODE_VERSION
+      nvm use $NODE_VERSION
     displayName: "Install node version using nvm"
 
   
