@@ -40,12 +40,14 @@ jobs:
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
       [Environment]::SetEnvironmentVariable("Path", $env:Path + ";$mypath", [EnvironmentVariableTarget]::Machine)
       [Environment]::SetEnvironmentVariable("NVM_HOME", "$mypath", [EnvironmentVariableTarget]::Machine)
-      [Environment]::SetEnvironmentVariable("NVM_SYMLINK", "C:\Program Files\nodejs", [EnvironmentVariableTarget]::Machine)
+      [Environment]::SetEnvironmentVariable("NVM_SYMLINK", "C:\Program Files\nodejs", "Machine")
       Write-Output ("Env Variables")
       Get-ChildItem Env:
     displayName: "Printing Path and setting path variable"
 
   - powershell: |
+      Write-Output ("Env Variables")
+      Get-ChildItem Env:
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
       Write-Output("My Path:")
       $mypath
