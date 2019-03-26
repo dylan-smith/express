@@ -53,30 +53,12 @@ jobs:
       nvm use $NODE_VERSION
     displayName: "Install node version using nvm"
   
-  - script: |
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-      nvm use $NODE_VERSION
-      node --version
-    displayName: "Node Version"
-
-  - script: |
-      npm --version
-    displayName: "NPM Version"
-
-  - script: |
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-      nvm --version
-    displayName: "nvm version"
-
   #Start The Before Install Tasks 
   - script: |
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm config set shrinkwrap false
     displayName: 'Skip updating shrinkwrap / lock'
 
@@ -84,6 +66,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm rm --silent --save-dev connect-redis
     displayName: 'Remove all non-test dependencies'
 
@@ -91,6 +74,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm install --silent --save-dev mocha@3.5.3
     displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
     condition: lt(variables['NodeMajorVersion'], 6)
@@ -99,6 +83,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm install --silent --save-dev supertest@2.0.0
     displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
     condition: lt(variables['NodeMajorVersion'], 4)
@@ -106,7 +91,6 @@ jobs:
   - powershell: |
       # Prune & rebuild node_modules
       if (Test-Path -Path node_modules) {
-          node --version
           npm prune
           npm rebuild
         }
@@ -118,6 +102,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm install
     displayName: 'npm install'
     
@@ -126,6 +111,7 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm run test-ci
     displayName: 'Run test script'
 
@@ -133,10 +119,15 @@ jobs:
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm run lint
     displayName: 'Run linting'
 
   - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       npm install --save-dev coveralls@2.10.0
       node_modules/.bin/coveralls < ./coverage/lcov.info
     displayName: 'Upload coverage to coveralls'
