@@ -54,6 +54,10 @@ jobs:
     displayName: "Install node version using nvm"
   
   - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm use $NODE_VERSION
       node --version
     displayName: "Node Version"
 
