@@ -46,8 +46,6 @@ jobs:
     displayName: "Printing Path and setting path variable"
 
   - powershell: |
-      Write-Output ("Env Variables")
-      Get-ChildItem Env:
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
       Write-Output("My Path:")
       $mypath
@@ -56,13 +54,8 @@ jobs:
       $mysettingsfile
       Add-Content $mysettingsfile "root: $mypath`r`npath: C:\Program Files\nodejs"
       copy $mysettingsfile "c:\"
-      dir $mypath
-      Write-Output "c drive path"
-      dir "c:\"
       Write-Output "c users VssAdministrator"
-      dir c:\users\VssAdministrator
-      Write-Output "set"
-      more c:\settings.txt
+      dir "C:\Users\VssAdministrator\AppData\Roaming"
     displayName: "Create settings file"
 
   - script: |
