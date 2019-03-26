@@ -1,0 +1,144 @@
+jobs:
+- job: LinuxBuilds_MustPass
+  strategy:
+    maxParallel: 10
+    matrix:
+      Node 0.10:
+        NODE_VERSION: '0.10'
+      Node 0.12:
+        NODE_VERSION: '0.12'
+      Node 1.8:
+        NODE_VERSION: '1.8'
+      Node 2.5:
+        NODE_VERSION: '2.5'
+      Node 3.3:
+        NODE_VERSION: '3.3'
+      Node 4.9:
+        NODE_VERSION: '4.9'
+      Node 5.12:
+        NODE_VERSION: '5.12'
+      Node 6.14:
+        NODE_VERSION: '6.14'
+      Node 7.10:
+        NODE_VERSION: '7.10'
+      Node 8.12:
+        NODE_VERSION: '8.12'
+  continueOnError: false
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  steps:
+  - powershell: |
+      $nodeVersion = "$(NODE_VERSION)"
+      $nodeMajorVersion = $nodeVersion.split(".")[0]
+      Write-Output ("##vso[task.setvariable variable=NodeMajorVersion;]$nodeMajorVersion")
+    displayName: "Get Major Version Number of NodeJS Using PowerShell"
+
+  #NVM is required to be able to accesses early versions of Node
+  - script: |
+      curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh -o install.sh
+      bash install.sh
+      source ~/.profile
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm --version
+    displayName: "Install NVM" 
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm install $NODE_VERSION
+      nvm use $NODE_VERSION
+    displayName: "Install node version using nvm"
+  
+  - script: |
+      node --version
+    displayName: "Node Version"
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm --version
+    displayName: "NPM Version"
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      nvm --version
+    displayName: "nvm version"
+
+  #Start The Before Install Tasks 
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm config set shrinkwrap false
+    displayName: 'Skip updating shrinkwrap / lock'
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm rm --silent --save-dev connect-redis
+    displayName: 'Remove all non-test dependencies'
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm install --silent --save-dev mocha@3.5.3
+    displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+    condition: lt(variables['NodeMajorVersion'], 6)
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm install --silent --save-dev supertest@2.0.0
+    displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
+    condition: lt(variables['NodeMajorVersion'], 4)
+    
+  - powershell: |
+      # Prune & rebuild node_modules
+      if (Test-Path -Path node_modules) {
+          node --version
+          npm prune
+          npm rebuild
+        }
+    displayName: 'Update Node.js modules'
+
+#Finish With Before Install Tasks. Time to install dependencies
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm install
+    displayName: 'npm install'
+    
+  #Testing
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm run test-ci
+    displayName: 'Run test script'
+
+  - script: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      npm run lint
+    displayName: 'Run linting'
+
+  - script: |
+      npm install --save-dev coveralls@2.10.0
+      node_modules/.bin/coveralls < ./coverage/lcov.info
+    displayName: 'Upload coverage to coveralls'
+    env:
+      COVERALLS_REPO_TOKEN: $(coveralls.key.mickey)
+      COVERALLS_SERVICE_NAME: 'AzureDevOps'
