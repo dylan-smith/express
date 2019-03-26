@@ -43,6 +43,8 @@ jobs:
       [Environment]::SetEnvironmentVariable("NVM_SYMLINK", "C:\Program Files\nodejs", "Machine")
       Write-Output ("Env Variables")
       Get-ChildItem Env:
+      Write-Output ("Path")
+      $Env:Path
     displayName: "Printing Path and setting path variable"
 
   - powershell: |
