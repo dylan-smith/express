@@ -54,7 +54,7 @@ jobs:
       $mysettingsfile = (Join-Path "$mypath" "settings.txt")
       Write-Output("My settings file:")
       $mysettingsfile
-      Add-Content $mysettingsfile "root: C:\Users\VssAdministrator\AppData\Roaming`r`npath: C:\Program Files\nodejs"
+      Add-Content $mysettingsfile "root: $mypath`r`npath: C:\Program Files\nodejs"
       copy $mysettingsfile "c:\"
       Write-Output "settings file"
       more "C:\settings.txt"
