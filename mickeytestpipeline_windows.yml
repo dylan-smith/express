@@ -39,6 +39,10 @@ jobs:
       Pop-Location
       $mypath = (Join-Path "$(agent.tempDirectory)" "tmp")
       [Environment]::SetEnvironmentVariable("Path", $env:Path + ";$mypath", [EnvironmentVariableTarget]::Machine)
+      [Environment]::SetEnvironmentVariable("NVM_HOME", "$mypath", [EnvironmentVariableTarget]::Machine)
+      [Environment]::SetEnvironmentVariable("NVM_SYMLINK", "C:\Program Files\nodejs", [EnvironmentVariableTarget]::Machine)
+      Write-Output ("Env Variables")
+      Get-ChildItem Env:
     displayName: "Printing Path and setting path variable"
 
   - powershell: |
@@ -53,11 +57,9 @@ jobs:
       dir $mypath
       Write-Output "c drive path"
       dir "c:\"
-      Write-Output "c users"
-      dir c:\users
-      Write-Output "Public"
-      dir C:\Users\Public\AppData\Roaming\npm
-      Write-Output "outputing settings file"
+      Write-Output "c users VssAdministrator"
+      dir c:\users\VssAdministrator
+      Write-Output "set"
       more c:\settings.txt
     displayName: "Create settings file"
 
