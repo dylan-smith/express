@@ -55,8 +55,6 @@ jobs:
       dir "c:\"
       Write-Output "c users"
       dir c:\users
-      Write-Output "Installer"
-      dir C:\Users\Installer\AppData\Roaming\npm
       Write-Output "Public"
       dir C:\Users\Public\AppData\Roaming\npm
       Write-Output "outputing settings file"
