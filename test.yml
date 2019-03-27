@@ -24,9 +24,8 @@ jobs:
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       dir $(agent.tempDirectory)
 
-      Start-Process msiexec -ArgumentList "/i .$file /qn /norestart /l*v $log" -Wait -PassThru
-
-      dir $agent.tempDirectory
+      Start-Process "msiexec.exe" -ArgumentList "/i $file /qn /norestart /L*v $log" -Wait -PassThru
+      dir $(agent.tempDirectory)
 
   - powershell: |
       node --version
