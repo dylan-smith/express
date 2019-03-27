@@ -27,11 +27,14 @@ jobs:
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
       Start-Process msiexec.exe -Wait -ArgumentList "/I $file /quiet"
-      $z = "c:\Program Files\iojs"
-      dir $z
-      [Environment]::SetEnvironmentVariable("Path", "$z;" + $env:Path, [EnvironmentVariableTarget]::Machine)
-      $env:Path
-      node --version
+      #$z = "c:\Program Files\iojs"
+      #dir $z
+      #[Environment]::SetEnvironmentVariable("Path", "$z;" + $env:Path, [EnvironmentVariableTarget]::Machine)
+      #$env:Path
+      #node --version
+      Push-Location env:
+      (ls path).value.split(";")
+      Pop-Location
 
   - powershell: |
       $env:Path
