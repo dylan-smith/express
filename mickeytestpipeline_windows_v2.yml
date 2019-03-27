@@ -47,8 +47,8 @@ jobs:
         $iojsConverted = ConvertFrom-Json -InputObject $iojsList
         $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $matchValues[0]
-        Install-iojsVersion $matchValues[0].version
-        Set-iojsVersion $matchValues[0].version
+        Install-iojsVersion $matchValues[0].version -ErrorAction Continue
+        Set-iojsVersion $matchValues[0].version -ErrorAction Continue
         node --version
         $x = $matchValues[0].version
         Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
@@ -63,8 +63,8 @@ jobs:
         $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
         $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $matchValues[0]
-        Install-nodeVersion $matchValues[0].version
-        Set-nodeVersion $matchValues[0].version
+        Install-nodeVersion $matchValues[0].version -ErrorAction Continue
+        Set-nodeVersion $matchValues[0].version -ErrorAction Continue
         node --version
         $x = $matchValues[0].version
         Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
