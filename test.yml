@@ -31,5 +31,6 @@ jobs:
         "/L*v"
         $logFile
       )
+      $MSIArguments
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow    
 
