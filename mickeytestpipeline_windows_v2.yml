@@ -19,20 +19,18 @@ jobs:
 
   - powershell: |
       import-module .\NodeVersionManager.psm1 -force
-      if ($(NODE_VERSION) -eq "2.5")
+      if ($(NODE_VERSION) -In 1.8..3.3)
       {
-      $iojsUrl = "https://iojs.org/dist/index.json"
-      $iojsList = Invoke-WebRequest -Uri $iojsUrl
-      $iojsConverted = ConvertFrom-Json -InputObject $iojsList
-      $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
-      $matchValues[0]
-      Install-iojsVersion $matchValues[0].version
-      Set-iojsVersion $matchValues[0].version
-      node --version
-      $x = $matchValues[0].version
-      Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
-      Write-Information ("Get-NodeInstallLocation")
-      Get-NodeInstallLocation
+        $iojsUrl = "https://iojs.org/dist/index.json"
+        $iojsList = Invoke-WebRequest -Uri $iojsUrl
+        $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+        $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+        $matchValues[0]
+        Install-iojsVersion $matchValues[0].version
+        Set-iojsVersion $matchValues[0].version
+        node --version
+        $x = $matchValues[0].version
+        Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
       }
       else
       {
