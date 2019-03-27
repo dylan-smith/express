@@ -40,14 +40,15 @@ function Set-NodeVersion {
         return
     }
 
-    Write-Output("MICKEY: env path= $env:Path")
+    
     $env:Path = "$requestedVersion;$env:Path"
-    Write-Output("MICKEY: env NODEPATH = $env:NODE_PATH")
+    Write-Output("MICKEY: env path= $env:Path")
     $env:NODE_PATH = "$requestedVersion;"
-    Write-Output("MICKEY: npm config set prefex")
+    Write-Output("MICKEY: env NODEPATH = $env:NODE_PATH")
     npm config set prefix $requestedVersion
-    Write-Output("MICKEY: env Nodepath again = $env:NODE_PATH")
+    Write-Output("MICKEY: npm config set prefex")
     $env:NODE_PATH += npm root -g
+    Write-Output("MICKEY: env Nodepath again = $env:NODE_PATH")
     Write-Host "Switched to node version $VersionToUse"
 }
 
