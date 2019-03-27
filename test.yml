@@ -3,34 +3,24 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 0.10:
-        NODE_VERSION: '0.10'
-      Node 0.12:
-        NODE_VERSION: '0.12'
       Node 1.8:
         NODE_VERSION: '1.8'
-      Node 2.5:
-        NODE_VERSION: '2.5'
-      Node 3.3:
-        NODE_VERSION: '3.3'
-      Node 4.9:
-        NODE_VERSION: '4.9'
-      Node 5.12:
-        NODE_VERSION: '5.12'
-      Node 6.14:
-        NODE_VERSION: '6.14'
-      Node 7.10:
-        NODE_VERSION: '7.10'
-      Node 8.12:
-        NODE_VERSION: '8.12'
 
   continueOnError: false
   pool:
     vmImage: 'vs2017-win2016'
 
   steps:
-  - task: NodeTool@0
-    displayName: "Use Node $(NODE_VERSION)"
-    inputs:
-      versionSpec: $(NODE_VERSION)
-      checkLatest: true
+  # - task: NodeTool@0
+  #  displayName: "Use Node $(NODE_VERSION)"
+  #  inputs:
+  #    versionSpec: $(NODE_VERSION)
+  #    checkLatest: true
+
+  - powershell: |
+      $iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
+      Invoke-WebRequest -Uri $iojsUrl -OutFile (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "iojs-v1.8.4-x64.msi")
+      $x = (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "iojs-v1.8.4-x64.msi")
+      $x /passive
+      node --version
+
