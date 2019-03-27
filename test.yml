@@ -28,6 +28,5 @@ jobs:
       dir $agent.tempDirectory
 
   - powershell: |
-      $env:Path
       node --version
 
