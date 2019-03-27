@@ -19,18 +19,9 @@ jobs:
 
   - powershell: |
       $iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
-      $file = "mickey.msi"
-      Invoke-WebRequest -Uri $iojsUrl -OutFile (Join-Path "$(agent.tempDirectory)" "$file")
+      $file = (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "mickey.msi")
+      Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
-      $MSIArguments = @(
-        "/i"
-        ('"{0}"' -f $file.fullname)
-        "/qn"
-        "/norestart"
-        "/L*v"
-        $logFile
-      )
-      $MSIArguments
-      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow    
+      Start-Process msiexec.exe -Wait -ArgumentList "/I $file /quiet"
 
