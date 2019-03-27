@@ -32,6 +32,7 @@ jobs:
         node --version
         $x = $matchValues[0].version
         Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
+        Write-Output ("##vso[task.setvariable variable=SetNodeMethod;]$Set-iojsVersion")
       }
       else
       {
@@ -41,7 +42,7 @@ jobs:
     displayName: "Determine whether to use node.js or iojs"
 
   - powershell: |
-     
+      $(SetNodeMethod) $(FullNodeVersion)
       node --version
     displayName: "Node Version"
 
