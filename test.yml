@@ -24,4 +24,8 @@ jobs:
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
       Start-Process msiexec.exe -Wait -ArgumentList "/I $file /quiet"
+      node --version
+
+  - powershell: |
+      node --version
 
