@@ -52,12 +52,12 @@ jobs:
         $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
         $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $matchValues[0]
-        Install-nodejsVersion $matchValues[0].version
-        Set-nodejsVersion $matchValues[0].version
+        Install-nodeVersion $matchValues[0].version
+        Set-nodeVersion $matchValues[0].version
         node --version
         $x = $matchValues[0].version
         Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
-        $y = "Set-nodejsVersion"
+        $y = "Set-nodeVersion"
         Write-Output ("##vso[task.setvariable variable=SetNodeMethod;]$y")
       }
     displayName: "Determine whether to use node.js or iojs"
