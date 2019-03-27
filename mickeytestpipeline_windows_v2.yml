@@ -27,14 +27,14 @@ jobs:
       Install-iojsVersion $matchValues[0].version
       Set-iojsVersion $matchValues[0].version
       node --version
-      Write-Output ("##vso[task.setvariable variable=FULL_NODE_VERSION;]$matchValues[0].version")
+      Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$matchValues[0].version")
       Write-Output($(NodeMajorVersion))
-      Write-Output($(FULL_NODE_VERSION))
     displayName: "Powershell stuff"
 
   - powershell: |
+      Write-Output($(FullNodeVersion))
       import-module .\NodeVersionManager.psm1 -force
-      Set-iojsVersion $(FULL_NODE_VERSION)
+      Set-iojsVersion $(FullNodeVersion)
       node --version
     displayName: "Node Version"
 
