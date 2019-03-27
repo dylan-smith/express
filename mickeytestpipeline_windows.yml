@@ -3,24 +3,6 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 0.10:
-        NODE_VERSION: '0.10'
-      Node 0.12:
-        NODE_VERSION: '0.12'
-      Node 1.8:
-        NODE_VERSION: '1.8'
-      Node 2.5:
-        NODE_VERSION: '2.5'
-      Node 3.3:
-        NODE_VERSION: '3.3'
-      Node 4.9:
-        NODE_VERSION: '4.9'
-      Node 5.12:
-        NODE_VERSION: '5.12'
-      Node 6.14:
-        NODE_VERSION: '6.14'
-      Node 7.10:
-        NODE_VERSION: '7.10'
       Node 8.12:
         NODE_VERSION: '8.12'
   continueOnError: false
@@ -78,15 +60,20 @@ jobs:
       more "C:\settings.txt"
     displayName: "Create settings file"
 
-  - script: |
-      nvm version
-      nvm install $(NODE_VERSION)
-      nvm use $(NODE_VERSION)
+  - powershell: |
+      $nodejsUrl = "https://nodejs.org/dist/index.json"
+      $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
+      $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
+      $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+      $x = $matchValues[0].version
+      nvm install $x
+      nvm use $x
+      Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
     displayName: "Install node version using nvm"
 
   
-  - script: |
-      nvm use $(NODE_VERSION)
+  - powershell: |
+      nvm use $(FullNodeVersion)
       node --version
     displayName: "Node Version"
 
