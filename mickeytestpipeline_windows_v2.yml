@@ -5,10 +5,7 @@ jobs:
     matrix:
       Node 1.8:
         NODE_VERSION: '1.8'
-      Node 2.5:
-        NODE_VERSION: '2.5'
-      Node 3.3:
-        NODE_VERSION: '3.3'
+
   continueOnError: false
   pool:
     vmImage: 'vs2017-win2016'
@@ -30,13 +27,16 @@ jobs:
       $iojsConverted = ConvertFrom-Json -InputObject $iojsList
       $matchValues = $iojsConverted | Where-Object {$_.version -match "v1.8"}
       $matchValues[0]
-      Install-iojsVersion $matchValues[0].version
+      Install-iojsVersion $matchValues[0].version -Force
       Set-iojsVersion $matchValues[0].version
       node --version
       Write-Output ("##vso[task.setvariable variable=FULL_NODE_VERSION;isOutput=true]$matchValues[0].version")
+    name: setvarStep
     displayName: "Powershell stuff"
 
   - script: |
+      import-module .\NodeVersionManager.psm1 -force
+      Install-iojsVersion $FULL_NODE_VERSION -Force
       node --version
     displayName: "Node Version"
 
