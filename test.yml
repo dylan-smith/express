@@ -18,8 +18,8 @@ jobs:
   #    checkLatest: true
 
   - powershell: |
-      #$iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
-      #Invoke-WebRequest -Uri $iojsUrl -OutFile (Join-Path (Join-Path "$(agent.tempDirectory)" "tmp") "iojs-v1.8.4-x64.msi")
+      $iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
+      Invoke-WebRequest -Uri $iojsUrl -OutFile (Join-Path (Join-Path "$(agent.tempDirectory)" "mickey.msi")
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
       
