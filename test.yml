@@ -26,6 +26,7 @@ jobs:
 
       Start-Process "msiexec.exe" -ArgumentList "/i $file /qn /norestart /L*v $log" -Wait -PassThru
       dir $(agent.tempDirectory)
+      more $log
 
   - powershell: |
       node --version
