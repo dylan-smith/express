@@ -1,0 +1,87 @@
+jobs:
+- job: Windows_MustPass
+  strategy:
+    maxParallel: 10
+    matrix:
+      Node 1.8:
+        NODE_VERSION: '1.8'
+      Node 2.5:
+        NODE_VERSION: '2.5'
+      Node 3.3:
+        NODE_VERSION: '3.3'
+  continueOnError: false
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  variables:
+    FULL_NODE_VERSION: $(setvarStep.FULL_NODE_VERSION)
+
+  steps:
+  - powershell: |
+      $nodeVersion = "$(NODE_VERSION)"
+      $nodeMajorVersion = $nodeVersion.split(".")[0]
+      Write-Output ("##vso[task.setvariable variable=NodeMajorVersion;]$nodeMajorVersion")
+    displayName: "Get Major Version Number of NodeJS Using PowerShell"
+
+  - powershell: |
+      import-module .\NodeVersionManager.psm1 -force
+      $iojsUrl = "https://iojs.org/dist/index.json"
+      $iojsList = Invoke-WebRequest -Uri $iojsUrl
+      $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+      $matchValues = $iojsConverted | Where-Object {$_.version -match "v1.8"}
+      $matchValues[0]
+      Install-iojsVersion $matchValues[0].version
+      Set-iojsVersion $matchValues[0].version
+      node --version
+      Write-Output ("##vso[task.setvariable variable=FULL_NODE_VERSION;isOutput=true]$matchValues[0].version")
+    displayName: "Powershell stuff"
+
+  - script: |
+      node --version
+    displayName: "Node Version"
+
+  - script: |
+      npm --version
+    displayName: "NPM Version"
+
+  #Start The Before Install Tasks 
+  - script: |
+      npm config set shrinkwrap false
+    displayName: 'Skip updating shrinkwrap / lock'
+
+  - script: |
+      npm rm --silent --save-dev connect-redis
+    displayName: 'Remove all non-test dependencies'
+
+  - script: |
+      npm install --silent --save-dev mocha@3.5.3
+    displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+    condition: lt(variables['NodeMajorVersion'], 6)
+
+  - script: |
+      npm install --silent --save-dev supertest@2.0.0
+    displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
+    condition: lt(variables['NodeMajorVersion'], 4)
+    
+  - powershell: |
+      # Prune & rebuild node_modules
+      if (Test-Path -Path node_modules) {
+          npm prune
+          npm rebuild
+        }
+    displayName: 'Update Node.js modules'
+
+#Finish With Before Install Tasks. Time to install dependencies
+
+  - script: |
+      npm install
+    displayName: 'npm install'
+    
+  #Testing
+  - script: |
+      npm run test-ci
+    displayName: 'Run test script'
+
+  - script: |
+      npm run lint
+    displayName: 'Run linting'
