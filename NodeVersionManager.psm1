@@ -11,7 +11,7 @@ function Set-NodeVersion {
         [ValidatePattern('^v\d\.\d{1,2}\.\d{1,2}$')]
         $Version
     )
-
+    "use strict";
     Write-Output("MICKEY: In The Set-NodeVersion Powershell function")
 
     if ([string]::IsNullOrEmpty($Version)) {
@@ -65,6 +65,8 @@ function Install-NodeVersion {
         [string]
         $architecture = $env:PROCESSOR_ARCHITECTURE
     )
+
+    "use strict";
 
     $requestedVersion = Join-Path $nvmwPath $version
 
