@@ -34,9 +34,9 @@ jobs:
     name: setvarStep
     displayName: "Powershell stuff"
 
-  - script: |
+  - powershell: |
       import-module .\NodeVersionManager.psm1 -force
-      Install-iojsVersion $FULL_NODE_VERSION -Force
+      Set-iojsVersion $FULL_NODE_VERSION -Force
       node --version
     displayName: "Node Version"
 
