@@ -28,6 +28,7 @@ jobs:
     displayName: "Get Major Version Number of NodeJS Using PowerShell"
 
   - powershell: |
+      $env:PROCESSOR_ARCHITECTURE
       import-module .\NodeVersionManager.psm1 -force
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
