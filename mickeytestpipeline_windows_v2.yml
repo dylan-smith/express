@@ -32,6 +32,11 @@ jobs:
       $x = $matchValues[0].version
       Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
       }
+      else
+      {
+        $z = "else statement"
+        $z
+      }
     displayName: "Determine whether to use node.js or iojs"
 
   - powershell: |
