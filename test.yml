@@ -22,5 +22,6 @@ jobs:
       Invoke-WebRequest -Uri $iojsUrl -OutFile (Join-Path "$(agent.tempDirectory)" "mickey.msi")
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
+      mickey.msi /passive
       
 
