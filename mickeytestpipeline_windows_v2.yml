@@ -18,9 +18,9 @@ jobs:
     displayName: "Get Major Version Number of NodeJS Using PowerShell"
 
   - powershell: |
+      import-module .\NodeVersionManager.psm1 -force
       if ($(NODE_VERSION) -eq "2.5")
       {
-      import-module .\NodeVersionManager.psm1 -force
       $iojsUrl = "https://iojs.org/dist/index.json"
       $iojsList = Invoke-WebRequest -Uri $iojsUrl
       $iojsConverted = ConvertFrom-Json -InputObject $iojsList
@@ -31,6 +31,8 @@ jobs:
       node --version
       $x = $matchValues[0].version
       Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
+      Write-Information ("Get-NodeInstallLocation")
+      Get-NodeInstallLocation
       }
       else
       {
@@ -40,8 +42,7 @@ jobs:
     displayName: "Determine whether to use node.js or iojs"
 
   - powershell: |
-      import-module .\NodeVersionManager.psm1 -force
-      Set-iojsVersion $(FullNodeVersion)
+     
       node --version
     displayName: "Node Version"
 
