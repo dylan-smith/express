@@ -19,17 +19,24 @@ jobs:
 
   - powershell: |
       import-module .\NodeVersionManager.psm1 -force
-      $iojsUrl = "https://iojs.org/dist/index.json"
-      $iojsList = Invoke-WebRequest -Uri $iojsUrl
-      $iojsConverted = ConvertFrom-Json -InputObject $iojsList
-      $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
-      $matchValues[0]
-      Install-iojsVersion $matchValues[0].version
-      Set-iojsVersion $matchValues[0].version
-      node --version
-      $x = $matchValues[0].version
-      Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
-    displayName: "Powershell stuff"
+      if ($(NODE_VERSION) -in 1.8..3.3)
+      {
+        $iojsUrl = "https://iojs.org/dist/index.json"
+        $iojsList = Invoke-WebRequest -Uri $iojsUrl
+        $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+        $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+        $matchValues[0]
+        Install-iojsVersion $matchValues[0].version
+        Set-iojsVersion $matchValues[0].version
+        node --version
+        $x = $matchValues[0].version
+        Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
+      }
+      else
+      {
+        Write-Output ("Use Node.JS")
+      }
+    displayName: "Determine whether to use node.js or iojs"
 
   - powershell: |
       import-module .\NodeVersionManager.psm1 -force
