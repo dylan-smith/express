@@ -26,12 +26,10 @@ jobs:
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
+      $mypath = "c:\Program Files\iojs"
+      $mypath
       Start-Process msiexec.exe -Wait -ArgumentList "/I $file /quiet"
-      #$z = "c:\Program Files\iojs"
-      #dir $z
-      #[Environment]::SetEnvironmentVariable("Path", "$z;" + $env:Path, [EnvironmentVariableTarget]::Machine)
-      #$env:Path
-      #node --version
+      [Environment]::SetEnvironmentVariable('PATH', $env:Path + ";$mypath", [EnvironmentVariableTarget]::Machine)
       Push-Location env:
       (ls path).value.split(";")
       Pop-Location
