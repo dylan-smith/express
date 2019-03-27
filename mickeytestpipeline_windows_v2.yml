@@ -3,16 +3,6 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 0.10:
-        NODE_VERSION: '0.10'
-      Node 0.12:
-        NODE_VERSION: '0.12'
-      Node 1.8:
-        NODE_VERSION: '1.8'
-      Node 2.5:
-        NODE_VERSION: '2.5'
-      Node 3.3:
-        NODE_VERSION: '3.3'
       Node 4.9:
         NODE_VERSION: '4.9'
 
@@ -33,6 +23,7 @@ jobs:
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
       {
+        Write-Information ("iojs")
         $iojsUrl = "https://iojs.org/dist/index.json"
         $iojsList = Invoke-WebRequest -Uri $iojsUrl
         $iojsConverted = ConvertFrom-Json -InputObject $iojsList
@@ -48,6 +39,7 @@ jobs:
       }
       else
       {
+        Write-Information("nodejs")
         $nodejsUrl = "https://nodejs.org/dist/index.json"
         $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
         $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
