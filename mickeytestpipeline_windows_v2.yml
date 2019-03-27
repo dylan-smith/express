@@ -32,7 +32,7 @@ jobs:
         node --version
         $x = $matchValues[0].version
         Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
-        Write-Output ("##vso[task.setvariable variable=SetNodeMethod;]$Set-iojsVersion")
+        Write-Output ("##vso[task.setvariable variable=SetNodeMethod;]"Set-iojsVersion")
       }
       else
       {
