@@ -27,7 +27,8 @@ jobs:
       Install-iojsVersion $matchValues[0].version
       Set-iojsVersion $matchValues[0].version
       node --version
-      Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$matchValues[0].version")
+      $x = $matchValues[0].version
+      Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
       Write-Output($(NodeMajorVersion))
     displayName: "Powershell stuff"
 
