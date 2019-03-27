@@ -71,14 +71,14 @@ jobs:
       npm rm --silent --save-dev connect-redis
     displayName: 'Remove all non-test dependencies'
 
-  - script: |
+  - powershell: |
       import-module .\NodeVersionManager.psm1 -force
       $(SetNodeMethod) $(FullNodeVersion)
       npm install --silent --save-dev mocha@3.5.3
     displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
     condition: lt(variables['NodeMajorVersion'], 6)
 
-  - script: |
+  - powershell: |
       import-module .\NodeVersionManager.psm1 -force
       $(SetNodeMethod) $(FullNodeVersion)
       npm install --silent --save-dev supertest@2.0.0
@@ -97,20 +97,20 @@ jobs:
 
 #Finish With Before Install Tasks. Time to install dependencies
 
-  - script: |
+  - powershell: |
       import-module .\NodeVersionManager.psm1 -force
       $(SetNodeMethod) $(FullNodeVersion)
       npm install
     displayName: 'npm install'
     
   #Testing
-  - script: |
+  - powershell: |
       import-module .\NodeVersionManager.psm1 -force
       $(SetNodeMethod) $(FullNodeVersion)
       npm run test-ci
     displayName: 'Run test script'
 
-  - script: |
+  - powershell: |
       import-module .\NodeVersionManager.psm1 -force
       $(SetNodeMethod) $(FullNodeVersion)
       npm run lint
