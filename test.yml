@@ -20,10 +20,11 @@ jobs:
   - powershell: |
       $iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
       $file = Join-Path "$(agent.tempDirectory)" "mickey.msi"
+      $log = Join-Path "$(agent.tempDirectory)" "install.log"
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       dir $(agent.tempDirectory)
 
-      Start-Process -FilePath "$env:systemroot\system32\msiexec.exe" -ArgumentList "/i `"$file`" /n /passive /l:$(agent.tempDirectory)\mylog.log" -Wait -WorkingDirectory $(agent.TempDirectory) -PassThru
+      Start-Process msiexec -ArgumentList "/i .$file /qn /norestart /l*v $log" -Wait -PassThru
 
       dir $agent.tempDirectory
 
