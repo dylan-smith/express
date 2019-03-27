@@ -19,7 +19,8 @@ jobs:
 
   - powershell: |
       import-module .\NodeVersionManager.psm1 -force
-      if ($(NODE_VERSION) -In 1.8..3.3)
+      $iojsValues = '1.8','2.5','3.3'
+      if ($(NODE_VERSION) -In $iojsValues)
       {
         $iojsUrl = "https://iojs.org/dist/index.json"
         $iojsList = Invoke-WebRequest -Uri $iojsUrl
