@@ -12,6 +12,8 @@ function Set-NodeVersion {
         $Version
     )
 
+    Write-Output("MICKEY: In The Set-NodeVersion Powershell function")
+
     if ([string]::IsNullOrEmpty($Version)) {
         if (Test-Path .\.nvmrc) {
             $VersionToUse = Get-Content .\.nvmrc -Raw 
@@ -27,16 +29,24 @@ function Set-NodeVersion {
 
     $VersionToUse = $VersionToUse.replace("`n","").replace("`r","")
 
+    Write-Output("MICKEY: Version To Use = $VersionToUse")
+
     $requestedVersion = Join-Path $nvmwPath $VersionToUse
+
+    Write-Output("MICKEY: Requested Version = $requestedVersion")
 
     if (!(Test-Path -Path $requestedVersion)) {
         Write-Host "Could not find node version $VersionToUse"
         return
     }
 
+    Write-Output("MICKEY: env path= $env:Path")
     $env:Path = "$requestedVersion;$env:Path"
+    Write-Output("MICKEY: env NODEPATH = $env:NODE_PATH")
     $env:NODE_PATH = "$requestedVersion;"
+    Write-Output("MICKEY: npm config set prefex")
     npm config set prefix $requestedVersion
+    Write-Output("MICKEY: env Nodepath again = $env:NODE_PATH")
     $env:NODE_PATH += npm root -g
     Write-Host "Switched to node version $VersionToUse"
 }
