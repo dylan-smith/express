@@ -3,8 +3,8 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 4.9:
-        NODE_VERSION: '4.9'
+      Node 8.12:
+        NODE_VERSION: '8.12'
 
   continueOnError: false
   pool:
