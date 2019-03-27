@@ -3,8 +3,8 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 1.8:
-        NODE_VERSION: '1.8'
+      Node 2.5:
+        NODE_VERSION: '2.5'
 
   continueOnError: false
   pool:
@@ -22,7 +22,7 @@ jobs:
       $iojsUrl = "https://iojs.org/dist/index.json"
       $iojsList = Invoke-WebRequest -Uri $iojsUrl
       $iojsConverted = ConvertFrom-Json -InputObject $iojsList
-      $matchValues = $iojsConverted | Where-Object {$_.version -match "$(NODE_VERSION)"}
+      $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
       $matchValues[0]
       Install-iojsVersion $matchValues[0].version
       Set-iojsVersion $matchValues[0].version
