@@ -18,17 +18,22 @@ jobs:
   #    checkLatest: true
 
   - powershell: |
+      Push-Location env:
+      (ls path).value.split(";")
+      Pop-Location
       $iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
       $file = Join-Path "$(agent.tempDirectory)" "mickey.msi"
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       #$x = (Join-Path "$(agent.tempDirectory)" "tmp")
       dir $(agent.tempDirectory)
       Start-Process msiexec.exe -Wait -ArgumentList "/I $file /quiet"
-      dir $(agent.tempDirectory)
-      [Environment]::SetEnvironmentVariable("Path", "$(agent.tempDirectory);" + $env:Path, [EnvironmentVariableTarget]::Machine)
+      $z = "c:\Program Files\iojs"
+      dir $z
+      [Environment]::SetEnvironmentVariable("Path", "$z;" + $env:Path, [EnvironmentVariableTarget]::Machine)
       $env:Path
       node --version
 
   - powershell: |
+      $env:Path
       node --version
 
