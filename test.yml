@@ -28,9 +28,9 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
 
-steps:
-- task: NodeTool@0
-  displayName: "Use Node $(NODE_VERSION)"
-  inputs:
-    versionSpec: $(NODE_VERSION)
-    checkLatest: true
+  steps:
+  - task: NodeTool@0
+    displayName: "Use Node $(NODE_VERSION)"
+    inputs:
+      versionSpec: $(NODE_VERSION)
+      checkLatest: true
