@@ -80,18 +80,18 @@ jobs:
 
   - script: |
       nvm version
-      nvm install $NODE_VERSION
-      nvm use $NODE_VERSION
+      nvm install $(NODE_VERSION)
+      nvm use $(NODE_VERSION)
     displayName: "Install node version using nvm"
 
   
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       node --version
     displayName: "Node Version"
 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm --version
     displayName: "NPM Version"
 
@@ -101,23 +101,23 @@ jobs:
 
   #Start The Before Install Tasks 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm config set shrinkwrap false
     displayName: 'Skip updating shrinkwrap / lock'
 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm rm --silent --save-dev connect-redis
     displayName: 'Remove all non-test dependencies'
 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm install --silent --save-dev mocha@3.5.3
     displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
     condition: lt(variables['NodeMajorVersion'], 6)
 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm install --silent --save-dev supertest@2.0.0
     displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
     condition: lt(variables['NodeMajorVersion'], 4)
@@ -133,17 +133,17 @@ jobs:
 #Finish With Before Install Tasks. Time to install dependencies
 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm install
     displayName: 'npm install'
     
   #Testing
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm run test-ci
     displayName: 'Run test script'
 
   - script: |
-      nvm use $NODE_VERSION
+      nvm use $(NODE_VERSION)
       npm run lint
     displayName: 'Run linting'
