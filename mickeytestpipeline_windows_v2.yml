@@ -34,7 +34,7 @@ jobs:
       {
         $iojsUrl = "https://iojs.org/dist/index.json"
         $iojsList = Invoke-WebRequest -Uri $iojsUrl
-        $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+        $iojsConverted = ConvertFrom-Json -InputObject $iojsjsList
         $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $matchValues[0]
         Install-iojsVersion $matchValues[0].version
@@ -48,7 +48,7 @@ jobs:
       else
       {
         $nodejsUrl = "https://nodejs.org/dist/index.json"
-        $nodejsList = Invoke-WebRequest -Uri $iojsUrl
+        $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
         $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
         $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $matchValues[0]
