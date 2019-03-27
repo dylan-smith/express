@@ -28,8 +28,8 @@ jobs:
       Set-iojsVersion $matchValues[0].version
       node --version
       echo "##vso[task.setvariable variable=FULL_NODE_VERSION;isOutput=true]$matchValues[0].version"
-      Write-Output(variables['NodeMajorVersion'])
-      Write-Output(variables['FULL_NODE_VERSION'])
+      Write-Output($(FULL_NODE_VERSION)
+      Write-Output($(NodeMajorVersion)
     displayName: "Powershell stuff"
 
   - powershell: |
