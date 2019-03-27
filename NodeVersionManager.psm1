@@ -78,7 +78,7 @@ function Install-NodeVersion {
             $nodeUrl = "http://nodejs.org/dist/$version/$msiFile"
         }
     }
-
+    Write-Output ("Node url being used is: $nodeurl")
     Invoke-WebRequest -Uri $nodeUrl -OutFile (Join-Path $requestedVersion $msiFile)
 
     if (-Not (Get-Command msiexec)) {
