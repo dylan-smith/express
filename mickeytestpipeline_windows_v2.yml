@@ -29,26 +29,30 @@ jobs:
       node --version
       $x = $matchValues[0].version
       Write-Output ("##vso[task.setvariable variable=FullNodeVersion;]$x")
-      Write-Output($(NodeMajorVersion))
     displayName: "Powershell stuff"
 
   - powershell: |
-      Write-Output($(FullNodeVersion))
       import-module .\NodeVersionManager.psm1 -force
       Set-iojsVersion $(FullNodeVersion)
       node --version
     displayName: "Node Version"
 
-  - script: |
+  - powershell: |
+      import-module .\NodeVersionManager.psm1 -force
+      Set-iojsVersion $(FullNodeVersion)
       npm --version
     displayName: "NPM Version"
 
   #Start The Before Install Tasks 
-  - script: |
+  - powershell: |
+      import-module .\NodeVersionManager.psm1 -force
+      Set-iojsVersion $(FullNodeVersion)
       npm config set shrinkwrap false
     displayName: 'Skip updating shrinkwrap / lock'
 
-  - script: |
+  - powershell: |
+      import-module .\NodeVersionManager.psm1 -force
+      Set-iojsVersion $(FullNodeVersion)
       npm rm --silent --save-dev connect-redis
     displayName: 'Remove all non-test dependencies'
 
