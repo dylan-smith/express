@@ -22,14 +22,14 @@ jobs:
       $iojsUrl = "https://iojs.org/dist/index.json"
       $iojsList = Invoke-WebRequest -Uri $iojsUrl
       $iojsConverted = ConvertFrom-Json -InputObject $iojsList
-      $matchValues = $iojsConverted | Where-Object {$_.version -match "v1.8"}
+      $matchValues = $iojsConverted | Where-Object {$_.version -match "$(NODE_VERSION)"}
       $matchValues[0]
       Install-iojsVersion $matchValues[0].version -Force
       Set-iojsVersion $matchValues[0].version
       node --version
       echo "##vso[task.setvariable variable=FULL_NODE_VERSION;isOutput=true]$matchValues[0].version"
-      Write-Output($(FULL_NODE_VERSION)
-      Write-Output($(NodeMajorVersion)
+      Write-Output($(FULL_NODE_VERSION))
+      Write-Output($(NodeMajorVersion))
     displayName: "Powershell stuff"
 
   - powershell: |
