@@ -47,7 +47,15 @@ jobs:
       {
         Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
       }
+  - powershell: |
+      $removeThis = ";C:\Program Files\nodejs\;"
+      $oldPath = "$env:Path"
+      $newPath = $oldPath.Replace("$removeThis",";")
+      $finalPath = "$newPath"
+      $finalPath
+      Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
       $env:Path
+    displayName: "remove Node From Path"
   
   - script: 'where node'
     displayName: 'Command Line Script'
