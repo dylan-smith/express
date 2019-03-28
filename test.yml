@@ -31,7 +31,7 @@ jobs:
       $iojsDir = "c:\Program Files\iojs"
       dir "$iojsDir"
       #more $logFile
-      $newPath = "$env:Path;$iojsDir"
+      $newPath = "$iojsDir;$env:Path"
       $env:Path
       node --version
 
