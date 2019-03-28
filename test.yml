@@ -57,8 +57,8 @@ jobs:
       $env:Path
     displayName: "remove Node From Path"
   
-  - script: 'where node'
-    displayName: 'Command Line Script'
+  #- script: 'where node'
+  #  displayName: 'Command Line Script'
 
   - powershell: |
       #$iojsUrl = "https://iojs.org/dist/v2.4.0/iojs-v2.4.0-x64.msi"
@@ -80,36 +80,6 @@ jobs:
       #$env:Path
       #node --version
 
-      if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
-      {
-        Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
-      }
-      if(Test-Path -Path "C:\Program Files\Nodejs")
-      {
-        Remove-Item -Recurse -Force "C:\Program Files\Nodejs"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm-cache")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm-cache"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\.npmrc")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\.npmrc"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\npmrc")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\npmrc"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
-      }
-      
-      where node
       $env:PROCESSOR_ARCHITECTURE
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
