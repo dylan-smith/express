@@ -47,6 +47,7 @@ jobs:
       {
         Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
       }
+      $env:Path
   
   - script: 'where node'
     displayName: 'Command Line Script'
