@@ -25,6 +25,7 @@ jobs:
 
   - powershell: |
       dir "c:\npm"
+      ls "c:\npm" -r | measure -s Length
       if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
       {
         Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
