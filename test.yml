@@ -32,7 +32,7 @@ jobs:
       #more $logFile
       $env:Path
       $mynode = "c:\program files\iojs\node.exe"
-      $mynode --version
+      "$mynode --version"
 
   - powershell: |
       node --version
