@@ -52,6 +52,11 @@ jobs:
       {
         Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
       }
+      if(Test-Path -Path "C:\npm")
+      {
+        Remove-Item -Recurse -Force "C:\npm"
+      }
+      C:\npm\prefix
     displayName: "Delete node stuff"
 
   - powershell: |
@@ -59,6 +64,8 @@ jobs:
       $removeThis = ";C:\Program Files\nodejs\;"
       $oldPath = "$env:Path"
       $newPath = $oldPath.Replace("$removeThis",";")
+      $removeThis = ";C:\npm\prefix;"
+      $newPath = $newPath.Replace("$removeThis",";")
       $finalPath = "$newPath"
       $finalPath
       #Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
