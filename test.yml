@@ -60,6 +60,7 @@ jobs:
   #- script: 'where node'
   #  displayName: 'Command Line Script'
   - powershell: |
+      get-wmiobject Win32_Product | Format-Table IdentifyingNumber, Name, LocalPackage -AutoSize
       $currentNodeVersion = node --version
       $nodejsUrl = "https://nodejs.org/dist/index.json"
       $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
