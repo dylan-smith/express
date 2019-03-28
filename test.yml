@@ -81,7 +81,7 @@ jobs:
       #$targetDir = "$(agent.tempDirectory)"
       #$MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
       #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L", $logFile)
-      $MSIArguments = @("/x", "{58108C5E-FC5E-4464-8363-BE20821E480B}", "/L*v", $logFile)
+      $MSIArguments = @("/x", "{58108C5E-FC5E-4464-8363-BE20821E480B}", "/qn", "/norestart", "/L*v", $logFile)
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       dir $(agent.tempDirectory)
       #$iojsDir = "c:\Program Files\iojs"
