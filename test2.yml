@@ -53,6 +53,7 @@ jobs:
       $newPath = "$nodejsDir;$env:Path"
       $newPath
       Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+      $env:Path
     displayName: "set path"
       
   - powershell: |
