@@ -74,6 +74,9 @@ jobs:
       else
       {
         Write-Information ("nodejsjs")
+        $nodejsDir = "c:\Program Files\nodejs"
+        dir "$nodejsDir"
+        Remove-Item -Recurse -Force "$nodejsdr"
         $nodejsUrl = "https://nodejs.org/dist/index.json"
         $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
         $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
