@@ -29,7 +29,8 @@ jobs:
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       dir $(agent.tempDirectory)
       dir "c:\Program Files\iojs"
-      more $logFile
+      #more $logFile
+      $env:Path
       node --version
 
   - powershell: |
