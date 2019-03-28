@@ -28,11 +28,12 @@ jobs:
       $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       dir $(agent.tempDirectory)
-      dir "c:\Program Files\iojs"
+      $iojsDir = "c:\Program Files\iojs"
+      dir "$iojsDir"
       #more $logFile
+      $env:Path = "$iojsDir;$env:Path"
       $env:Path
-      $mynode = "c:\program files\iojs\node.exe"
-      "$mynode --version"
+      node --version
 
   - powershell: |
       node --version
