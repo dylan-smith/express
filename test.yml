@@ -61,7 +61,8 @@ jobs:
       $newPath = $oldPath.Replace("$removeThis",";")
       $finalPath = "$newPath"
       $finalPath
-      Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
+      #Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
+      Write-Output ("##vso[task.prependpath]$finalPath")
       $env:Path
     displayName: "remove Node From Path"
   
@@ -102,9 +103,9 @@ jobs:
    #displayName: "uninstalling current version"
 
   - powershell: |
-      node --version
-      $currentNodeVersion = node --version
-      $currentNodeVersion
+      #node --version
+      #$currentNodeVersion = node --version
+      #$currentNodeVersion
       $env:Path
       $env:PROCESSOR_ARCHITECTURE
       $iojsValues = '1.8','2.5','3.3'
