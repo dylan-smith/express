@@ -24,7 +24,8 @@ jobs:
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       dir $(agent.tempDirectory)
 
-      Start-Process "msiexec.exe" -ArgumentList "/i $file /qn /norestart /L*v $log" -Wait -PassThru
+      Start-Process -FilePath "msiexec.exe" -Wait -PassThru -ArgumentList @("/a", "$file", "/qb", "TARGETDIR=$(agent.tempDirectory)", "/L*v $log")
+
       dir $(agent.tempDirectory)
       more $log
 
