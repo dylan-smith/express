@@ -32,9 +32,11 @@ jobs:
       dir "$iojsDir"
       #more $logFile
       $env:Path = "$iojsDir;$env:Path"
+      [Environment]::SetEnvironmentVariable("Path", $env:Path, [System.EnvironmentVariableTarget]::Machine)
       $env:Path
       node --version
 
   - powershell: |
+      $env:Path
       node --version
 
