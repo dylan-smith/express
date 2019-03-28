@@ -3,8 +3,8 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 1.8:
-        NODE_VERSION: '1.8'
+      Node 2.4:
+        NODE_VERSION: '2.4'
 
   continueOnError: false
   pool:
@@ -18,16 +18,10 @@ jobs:
   #    checkLatest: true
 
   - powershell: |
-      $iojsUrl = "https://iojs.org/dist/v1.8.4/iojs-v1.8.4-x64.msi"
-      $file = Join-Path "$(agent.tempDirectory)" "mickey.msi"
-      $log = Join-Path "$(agent.tempDirectory)" "install.log"
+      $iojsUrl = "https://iojs.org/dist/v2.4.0/iojs-v2.4.0-x64.msi"
+      $file = Join-Path "$(agent.tempDirectory)" "iojs-v2.4.0-x64.msi"
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       dir $(agent.tempDirectory)
-
-      Start-Process -FilePath "msiexec.exe" -Wait -PassThru -ArgumentList @("/a", "$file", "/qb", "TARGETDIR=$(agent.tempDirectory)", "/L*v $log")
-
-      dir $(agent.tempDirectory)
-      more $log
 
   - powershell: |
       node --version
