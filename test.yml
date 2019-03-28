@@ -5,8 +5,7 @@ jobs:
     matrix:
       Node 1.8:
         NODE_VERSION: '1.8'
-      Node 2.4:
-        NODE_VERSION: '2.4'
+      
 
   continueOnError: false
   pool:
@@ -40,7 +39,7 @@ jobs:
       #node --version
 
       $env:PROCESSOR_ARCHITECTURE
-      $iojsValues = '1.8','2.5','3.3'
+      $iojsValues = '1.8','2.4','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
       {
         Write-Information ("iojs")
@@ -49,8 +48,11 @@ jobs:
         $iojsConverted = ConvertFrom-Json -InputObject $iojsList
         $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $ver = "$matchValues[0].version"
+        $ver
         $msi = "iojs-$ver-x64.msi"
+        $msi
         $iojsUrl = "https://iojs.org/dist/$ver/$msi"
+        $iojsUrl
         $file = Join-Path "$(agent.tempDirectory)" "$msi"
         Invoke-WebRequest -Uri $iojsUrl -OutFile $file
         dir $(agent.tempDirectory)
