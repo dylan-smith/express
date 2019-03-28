@@ -47,7 +47,8 @@ jobs:
         $iojsList = Invoke-WebRequest -Uri $iojsUrl
         $iojsConverted = ConvertFrom-Json -InputObject $iojsList
         $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
-        $ver = "$matchValues[0].version"
+        $x = "$matchValues[0]"
+        $ver = $z.version
         $ver
         $msi = "iojs-$ver-x64.msi"
         $msi
