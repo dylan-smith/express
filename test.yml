@@ -61,25 +61,9 @@ jobs:
   #  displayName: 'Command Line Script'
 
   - powershell: |
-      #$iojsUrl = "https://iojs.org/dist/v2.4.0/iojs-v2.4.0-x64.msi"
-      #$file = Join-Path "$(agent.tempDirectory)" "iojs-v2.4.0-x64.msi"
-      #Invoke-WebRequest -Uri $iojsUrl -OutFile $file
-      #dir $(agent.tempDirectory)
-      ##Set variables and attempt to install
-      #$logFile = Join-Path "$(agent.tempDirectory)" "install.log"
-      ##$targetDir = "$(agent.tempDirectory)"
-      #$MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
-      #Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
-      #dir $(agent.tempDirectory)
-      #$iojsDir = "c:\Program Files\iojs"
-      #dir "$iojsDir"
-      ##more $logFile
-      #$newPath = "$iojsDir;$env:Path"
-      #$newPath
-      #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-      #$env:Path
-      #node --version
-      
+      node --version
+      $currentNodeVersion = node --version
+      $currentNodeVersion
       $env:Path
       $env:PROCESSOR_ARCHITECTURE
       $iojsValues = '1.8','2.5','3.3'
