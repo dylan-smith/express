@@ -24,6 +24,7 @@ jobs:
     displayName: "npm cache clean --force"
 
   - powershell: |
+      dir "c:\npm"
       if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
       {
         Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
