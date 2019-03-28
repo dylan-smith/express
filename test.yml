@@ -60,7 +60,7 @@ jobs:
   #- script: 'where node'
   #  displayName: 'Command Line Script'
   - powershell: |
-      #get-wmiobject Win32_Product | Format-Table IdentifyingNumber, Name, LocalPackage -AutoSize
+      get-wmiobject Win32_Product | Format-Table IdentifyingNumber, Name, LocalPackage -AutoSize
       #{58108C5E-FC5E-4464-8363-BE20821E480B} Node.js 
       #$currentNodeVersion = node --version
       #$nodejsUrl = "https://nodejs.org/dist/index.json"
@@ -77,6 +77,7 @@ jobs:
       #Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
       #dir $(agent.tempDirectory)
       ##Set variables and attempt to install
+      Write-Output ("Please work")
       dir "c:\windows\installer"
       $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
       #$targetDir = "$(agent.tempDirectory)"
