@@ -22,6 +22,12 @@ jobs:
       $file = Join-Path "$(agent.tempDirectory)" "iojs-v2.4.0-x64.msi"
       Invoke-WebRequest -Uri $iojsUrl -OutFile $file
       dir $(agent.tempDirectory)
+      #Set variables and attempt to install
+      $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
+      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile)
+      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow 
+      dir $(agent.tempDirectory)
+      more $logFile
 
   - powershell: |
       node --version
