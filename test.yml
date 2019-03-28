@@ -32,7 +32,8 @@ jobs:
       dir "$iojsDir"
       #more $logFile
       $newPath = "$iojsDir;$env:Path"
-      Write-Host "##vso[task.setvariable variable=PATH;]${env:PATH};$newPath";
+      $newPath
+      Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
       $env:Path
       node --version
 
