@@ -56,7 +56,6 @@ jobs:
       {
         Remove-Item -Recurse -Force "C:\npm"
       }
-      C:\npm\prefix
     displayName: "Delete node stuff"
 
   - powershell: |
