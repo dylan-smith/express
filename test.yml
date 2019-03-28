@@ -61,6 +61,7 @@ jobs:
   #  displayName: 'Command Line Script'
   - powershell: |
       get-wmiobject Win32_Product | Format-Table IdentifyingNumber, Name, LocalPackage -AutoSize
+      #{58108C5E-FC5E-4464-8363-BE20821E480B} Node.js 
       $currentNodeVersion = node --version
       $nodejsUrl = "https://nodejs.org/dist/index.json"
       $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
@@ -79,7 +80,8 @@ jobs:
       $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
       #$targetDir = "$(agent.tempDirectory)"
       #$MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
-      $MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L", $logFile)
+      #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L", $logFile)
+      $MSIArguments = @("/x", "{58108C5E-FC5E-4464-8363-BE20821E480B}")
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       dir $(agent.tempDirectory)
       #$iojsDir = "c:\Program Files\iojs"
