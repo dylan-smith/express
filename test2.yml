@@ -50,6 +50,7 @@ jobs:
 
   - powershell: |
       $nodejsDir = Join-Path "$(agent.tempDirectory)" "tmp"
+      $nodejsDir = Join-Path "$nodejsDir" "node-v4.9.1-win-x64"
       dir $nodejsDir
       $newPath = "$nodejsDir;$env:Path"
       $newPath
