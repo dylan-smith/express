@@ -31,7 +31,8 @@ jobs:
       $iojsDir = "c:\Program Files\iojs"
       dir "$iojsDir"
       #more $logFile
-      $env:Path = "$iojsDir;$env:Path"
+      $newPath = "$iojsDir;$env:Path"
+      [Environment]::SetEnvironmentVariable("Path", $newPath, [System.EnvironmentVariableTarget]::Machine)
       $env:Path
       node --version
 
