@@ -187,6 +187,8 @@ jobs:
         $ver = $matchValues[0].version
         $ver
         $edgeValues = '0.12','0.10'
+        Write-Output("Edge Values = $edgeValues")
+        Write-Output("Node version = $(NODE_VERSION)")
         if ($(NODE_VERSION) -In $edgeValues)
         {
           $msi = "node-$ver-x86.msi"
