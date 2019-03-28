@@ -38,6 +38,36 @@ jobs:
       #$env:Path
       #node --version
 
+      if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
+      {
+        Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
+      }
+      if(Test-Path -Path "C:\Program Files\Nodejs")
+      {
+        Remove-Item -Recurse -Force "C:\Program Files\Nodejs"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm-cache")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm-cache"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\.npmrc")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\.npmrc"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\npmrc")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\npmrc"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
+      }
+      
+
       $env:PROCESSOR_ARCHITECTURE
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
@@ -75,8 +105,8 @@ jobs:
       {
         Write-Information ("nodejsjs")
         $nodejsDir = "c:\Program Files\nodejs"
-        dir "$nodejsDir"
-        Remove-Item -Recurse -Force "$nodejsDir"
+        #dir "$nodejsDir"
+        #Remove-Item -Recurse -Force "$nodejsDir"
         $nodejsUrl = "https://nodejs.org/dist/index.json"
         $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
         $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
@@ -99,9 +129,9 @@ jobs:
         #$iojsDir = "c:\Program Files\iojs"
         #dir "$iojsDir"
         more $logFile
-        #$newPath = "$iojsDir;$env:Path"
-        #$newPath
-        #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+        $newPath = "$nodejsDir;$env:Path"
+        $newPath
+        Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
         $env:Path
         node --version
       }
