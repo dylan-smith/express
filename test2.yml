@@ -50,6 +50,7 @@ jobs:
 
   - powershell: |
       $nodejsDir = Join-Path "$(agent.tempDirectory)" "tmp"
+      dir $nodejsDir
       $newPath = "$nodejsDir;$env:Path"
       $newPath
       #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
