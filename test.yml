@@ -138,11 +138,12 @@ jobs:
         dir $(agent.tempDirectory)
         ##Set variables and attempt to install
         $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
-        #$targetDir = "$(agent.tempDirectory)"
-        $MSIArguments = @("/i", "$file", "/qn", "/fa", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+        $targetDir = "$(agent.tempDirectory)"
+        $MSIArguments = @("/a", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "TARGETDIR=$targetDir" "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
         dir $(agent.tempDirectory)
-        $iojsDir = "c:\Program Files\iojs"
+        dir "$(agent.tempDirectory)\iojs"
+        $iojsDir = "$(agent.tempDirectory)\iojs"
         #dir "$iojsDir"
         more $logFile
         $newPath = "$iojsDir;$env:Path"
