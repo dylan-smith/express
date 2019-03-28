@@ -146,6 +146,8 @@ jobs:
         dir "c:\mickey"
         #dir "$(agent.tempDirectory)\iojs"
         $iojsDir = "c:\mickey\iojs"
+        copy "c:\mickey\iojs\iojs.exe" "c:\mickey\iojs\node.exe"
+        dir "c:\mickey\iojs"
         #dir "$iojsDir"
         more $logFile
         $newPath = "$iojsDir;$env:Path"
