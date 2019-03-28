@@ -3,8 +3,8 @@ jobs:
   strategy:
     maxParallel: 10
     matrix:
-      Node 4.9:
-        NODE_VERSION: '4.9'
+      Node 3.3:
+        NODE_VERSION: '3.3'
       
 
   continueOnError: false
@@ -12,54 +12,64 @@ jobs:
     vmImage: 'vs2017-win2016'
 
   steps:
-  # - task: NodeTool@0
+  #This is node tool task, which works for all but 1.8, 2.5, 3.3
+  #- task: NodeTool@0
   #  displayName: "Use Node $(NODE_VERSION)"
   #  inputs:
   #    versionSpec: $(NODE_VERSION)
   #    checkLatest: true
 
-  #- powershell: |
-  #    if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
-  #    }
-  #    if(Test-Path -Path "C:\Program Files\Nodejs")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Program Files\Nodejs"
-  #    }
-  #    if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm"
-  #    }
-  #    if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm-cache")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm-cache"
-  #    }
-  #    if(Test-Path -Path "C:\Users\VssAdministrator\.npmrc")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\.npmrc"
-  #    }
-  #    if(Test-Path -Path "C:\Users\VssAdministrator\npmrc")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\npmrc"
-  #    }
-  #    if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*")
-  #    {
-  #      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
-  #    }
-  #- powershell: |
-  #    $removeThis = ";C:\Program Files\nodejs\;"
-  #    $oldPath = "$env:Path"
-  #    $newPath = $oldPath.Replace("$removeThis",";")
-  #    $finalPath = "$newPath"
-  #    $finalPath
-  #    Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
-  #    $env:Path
-  #  displayName: "remove Node From Path"
-  
-  #- script: 'where node'
-  #  displayName: 'Command Line Script'
   - powershell: |
+      npm cache clean --force
+    displayName: "npm cache clean --force"
+
+  - powershell: |
+      if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
+      {
+        Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
+      }
+      if(Test-Path -Path "C:\Program Files\Nodejs")
+      {
+        Remove-Item -Recurse -Force "C:\Program Files\Nodejs"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm-cache")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm-cache"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\.npmrc")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\.npmrc"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\npmrc")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\npmrc"
+      }
+      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*")
+      {
+        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
+      }
+    displayName: "Delete node stuff"
+
+  - powershell: |
+      $env:Path
+      $removeThis = ";C:\Program Files\nodejs\;"
+      $oldPath = "$env:Path"
+      $newPath = $oldPath.Replace("$removeThis",";")
+      $finalPath = "$newPath"
+      $finalPath
+      Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
+      $env:Path
+    displayName: "remove Node From Path"
+  
+  - script: |
+      where node
+      node --version
+    displayName: checking node version
+  #- powershell: |
       #get-wmiobject Win32_Product | Format-Table IdentifyingNumber, Name, LocalPackage -AutoSize
       #{58108C5E-FC5E-4464-8363-BE20821E480B} Node.js 
       #$currentNodeVersion = node --version
@@ -91,81 +101,81 @@ jobs:
       #more $logFile  
     #displayName: "uninstalling current version"
 
-  - powershell: |
-      node --version
-      $currentNodeVersion = node --version
-      $currentNodeVersion
-      $env:Path
-      $env:PROCESSOR_ARCHITECTURE
-      $iojsValues = '1.8','2.5','3.3'
-      if ($(NODE_VERSION) -In $iojsValues)
-      {
-        Write-Information ("iojs")
-        $iojsUrl = "https://iojs.org/dist/index.json"
-        $iojsList = Invoke-WebRequest -Uri $iojsUrl
-        $iojsConverted = ConvertFrom-Json -InputObject $iojsList
-        $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
-        $ver = $matchValues[0].version
-        $ver
-        $msi = "iojs-$ver-x64.msi"
-        $msi
-        $iojsUrl = "https://iojs.org/dist/$ver/$msi"
-        $iojsUrl
-        $file = Join-Path "$(agent.tempDirectory)" "$msi"
-        Invoke-WebRequest -Uri $iojsUrl -OutFile $file
-        dir $(agent.tempDirectory)
-        ##Set variables and attempt to install
-        $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
-        #$targetDir = "$(agent.tempDirectory)"
-        $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
-        Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
-        dir $(agent.tempDirectory)
-        $iojsDir = "c:\Program Files\iojs"
-        #dir "$iojsDir"
-        more $logFile
-        $newPath = "$iojsDir;$env:Path"
-        $newPath
-        Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-        $env:Path
-        node --version
-      }
-      else
-      {
-        Write-Information ("nodejsjs")
-        $nodejsDir = "c:\Program Files\nodejs"
-        #dir "$nodejsDir"
-        #Remove-Item -Recurse -Force "$nodejsDir"
-        $nodejsUrl = "https://nodejs.org/dist/index.json"
-        $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
-        $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
-        $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
-        $ver = $matchValues[0].version
-        $ver
-        $msi = "node-$ver-x64.msi"
-        $msi
-        $nodejsUrl = "https://nodejs.org/dist/$ver/$msi"
-        $nodejsUrl
-        $file = Join-Path "$(agent.tempDirectory)" "$msi"
-        Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
-        dir $(agent.tempDirectory)
-        ##Set variables and attempt to install
-        $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
-        #$targetDir = "$(agent.tempDirectory)"
-        $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
-        #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
-        Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
-        dir $(agent.tempDirectory)
-        #$iojsDir = "c:\Program Files\iojs"
-        #dir "$iojsDir"
-        more $logFile
-        #newPath = "$nodejsDir;$env:Path"
-        #$newPath
-        #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-        $env:Path
-        node --version
-      }
-
-  - powershell: |
-      $env:Path
-      node --version
+  #- powershell: |
+  #    node --version
+  #    $currentNodeVersion = node --version
+  #    $currentNodeVersion
+  #    $env:Path
+  #    $env:PROCESSOR_ARCHITECTURE
+  #    $iojsValues = '1.8','2.5','3.3'
+  #    if ($(NODE_VERSION) -In $iojsValues)
+  #    {
+  #      Write-Information ("iojs")
+  #      $iojsUrl = "https://iojs.org/dist/index.json"
+  #      $iojsList = Invoke-WebRequest -Uri $iojsUrl
+  #      $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+  #      $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+  #      $ver = $matchValues[0].version
+  #      $ver
+  #      $msi = "iojs-$ver-x64.msi"
+  #      $msi
+  #      $iojsUrl = "https://iojs.org/dist/$ver/$msi"
+  #      $iojsUrl
+  #      $file = Join-Path "$(agent.tempDirectory)" "$msi"
+  #      Invoke-WebRequest -Uri $iojsUrl -OutFile $file
+  #      dir $(agent.tempDirectory)
+  #      ##Set variables and attempt to install
+  #      $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
+  #      #$targetDir = "$(agent.tempDirectory)"
+  #      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+  #      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+  #      dir $(agent.tempDirectory)
+  #      $iojsDir = "c:\Program Files\iojs"
+  #      #dir "$iojsDir"
+  #      more $logFile
+  #      $newPath = "$iojsDir;$env:Path"
+  #      $newPath
+  #      Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+  #      $env:Path
+  #      node --version
+  #    }
+  #    else
+  #    {
+  #      Write-Information ("nodejsjs")
+  #      $nodejsDir = "c:\Program Files\nodejs"
+  #      #dir "$nodejsDir"
+  #      #Remove-Item -Recurse -Force "$nodejsDir"
+  #      $nodejsUrl = "https://nodejs.org/dist/index.json"
+  #      $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
+  #      $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
+  #      $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+  #      $ver = $matchValues[0].version
+  #      $ver
+  #      $msi = "node-$ver-x64.msi"
+  #      $msi
+  #      $nodejsUrl = "https://nodejs.org/dist/$ver/$msi"
+  #      $nodejsUrl
+  #      $file = Join-Path "$(agent.tempDirectory)" "$msi"
+  #      Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
+  #      dir $(agent.tempDirectory)
+  #      ##Set variables and attempt to install
+  #      $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
+  #      #$targetDir = "$(agent.tempDirectory)"
+  #      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+  #      #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
+  #      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+  #      dir $(agent.tempDirectory)
+  #      #$iojsDir = "c:\Program Files\iojs"
+  #      #dir "$iojsDir"
+  #      more $logFile
+  #      #newPath = "$nodejsDir;$env:Path"
+  #      #$newPath
+  #      #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+  #      $env:Path
+  #      node --version
+  #    }
+#
+  #- powershell: |
+  #    $env:Path
+  #    node --version
 
