@@ -79,7 +79,8 @@ jobs:
       #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
       #$env:Path
       #node --version
-
+      
+      $env:Path
       $env:PROCESSOR_ARCHITECTURE
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
