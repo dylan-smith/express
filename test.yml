@@ -18,6 +18,10 @@ jobs:
   #    versionSpec: $(NODE_VERSION)
   #    checkLatest: true
 
+  
+  - script: 'where node'
+    displayName: 'Command Line Script'
+
   - powershell: |
       #$iojsUrl = "https://iojs.org/dist/v2.4.0/iojs-v2.4.0-x64.msi"
       #$file = Join-Path "$(agent.tempDirectory)" "iojs-v2.4.0-x64.msi"
@@ -67,7 +71,7 @@ jobs:
         Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
       }
       
-
+      where node
       $env:PROCESSOR_ARCHITECTURE
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
