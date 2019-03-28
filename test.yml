@@ -19,63 +19,63 @@ jobs:
   #    versionSpec: $(NODE_VERSION)
   #    checkLatest: true
 
-  - powershell: |
-      npm cache clean --force
-    displayName: "npm cache clean --force"
-
-  - powershell: |
-      if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
-      {
-        Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
-      }
-      if(Test-Path -Path "C:\Program Files\Nodejs")
-      {
-        Remove-Item -Recurse -Force "C:\Program Files\Nodejs"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm-cache")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm-cache"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\.npmrc")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\.npmrc"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\npmrc")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\npmrc"
-      }
-      if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*")
-      {
-        Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
-      }
-      if(Test-Path -Path "C:\npm")
-      {
-        Remove-Item -Recurse -Force "C:\npm"
-      }
-      if(Test-Path -Path "C:\ProgramData\Chocolatey\bin")
-      {
-        Remove-Item -Recurse -Force "C:\ProgramData\Chocolatey\bin"
-      }
-      dir "C:\ProgramData\Chocolatey"
-    displayName: "Delete node stuff"
-
-  - powershell: |
-      $env:Path
-      $removeThis = ";C:\Program Files\nodejs\;"
-      $oldPath = "$env:Path"
-      $newPath = $oldPath.Replace("$removeThis",";")
-      $removeThis = ";C:\npm\prefix;"
-      $newPath = $newPath.Replace("$removeThis",";")
-      $finalPath = "$newPath"
-      $finalPath
-      #Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
-      Write-Output ("##vso[task.prependpath]$finalPath")
-      $env:Path
-    displayName: "remove Node From Path"
+#- powershell: |
+#    npm cache clean --force
+#  displayName: "npm cache clean --force"
+#
+#- powershell: |
+#    if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
+#    {
+#      Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
+#    }
+#    if(Test-Path -Path "C:\Program Files\Nodejs")
+#    {
+#      Remove-Item -Recurse -Force "C:\Program Files\Nodejs"
+#    }
+#    if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm")
+#    {
+#      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm"
+#    }
+#    if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Roaming\npm-cache")
+#    {
+#      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Roaming\npm-cache"
+#    }
+#    if(Test-Path -Path "C:\Users\VssAdministrator\.npmrc")
+#    {
+#      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\.npmrc"
+#    }
+#    if(Test-Path -Path "C:\Users\VssAdministrator\npmrc")
+#    {
+#      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\npmrc"
+#    }
+#    if(Test-Path -Path "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*")
+#    {
+#      Remove-Item -Recurse -Force "C:\Users\VssAdministrator\AppData\Local\Temp\npm-*"
+#    }
+#    if(Test-Path -Path "C:\npm")
+#    {
+#      Remove-Item -Recurse -Force "C:\npm"
+#    }
+#    if(Test-Path -Path "C:\ProgramData\Chocolatey\bin")
+#    {
+#      Remove-Item -Recurse -Force "C:\ProgramData\Chocolatey\bin"
+#    }
+#    dir "C:\ProgramData\Chocolatey"
+#  displayName: "Delete node stuff"
+#
+#- powershell: |
+#    $env:Path
+#    $removeThis = ";C:\Program Files\nodejs\;"
+#    $oldPath = "$env:Path"
+#    $newPath = $oldPath.Replace("$removeThis",";")
+#    $removeThis = ";C:\npm\prefix;"
+#    $newPath = $newPath.Replace("$removeThis",";")
+#    $finalPath = "$newPath"
+#    $finalPath
+#    #Write-Host "##vso[task.setvariable variable=PATH;]$finalPath";
+#    Write-Output ("##vso[task.prependpath]$finalPath")
+#    $env:Path
+#  displayName: "remove Node From Path"
   
   
 
@@ -139,7 +139,7 @@ jobs:
         ##Set variables and attempt to install
         $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
         #$targetDir = "$(agent.tempDirectory)"
-        $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+        $MSIArguments = @("/i", "$file", "/qn", "/fa", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
         dir $(agent.tempDirectory)
         $iojsDir = "c:\Program Files\iojs"
@@ -173,7 +173,7 @@ jobs:
         ##Set variables and attempt to install
         $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
         #$targetDir = "$(agent.tempDirectory)"
-        $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+        $MSIArguments = @("/i", "$file", "/fa", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
         #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
         dir $(agent.tempDirectory)
