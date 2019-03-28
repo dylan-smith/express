@@ -24,11 +24,13 @@ jobs:
       dir $(agent.tempDirectory)
       #Set variables and attempt to install
       $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
-      $targetDir = "$(agent.tempDirectory)"
-      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "INSTALLDIR=`"$targetDir`"", "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+      #$targetDir = "$(agent.tempDirectory)"
+      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       dir $(agent.tempDirectory)
+      dir "c:\Program Files\iojs"
       more $logFile
+      node --version
 
   - powershell: |
       node --version
