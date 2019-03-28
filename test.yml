@@ -31,7 +31,8 @@ jobs:
       dir "c:\Program Files\iojs"
       #more $logFile
       $env:Path
-      node --version
+      $mynode = "c:\program files\iojs\node.exe"
+      $mynode --version
 
   - powershell: |
       node --version
