@@ -77,6 +77,7 @@ jobs:
       #Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
       #dir $(agent.tempDirectory)
       ##Set variables and attempt to install
+      dir "c:\windows\installer"
       $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
       #$targetDir = "$(agent.tempDirectory)"
       #$MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
