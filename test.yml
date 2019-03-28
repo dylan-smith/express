@@ -146,16 +146,16 @@ jobs:
         ##Set variables and attempt to install
         $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
         #$targetDir = "$(agent.tempDirectory)"
-        #$MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
-        $MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
+        $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+        #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
         dir $(agent.tempDirectory)
         #$iojsDir = "c:\Program Files\iojs"
         #dir "$iojsDir"
         more $logFile
-        $newPath = "$nodejsDir;$env:Path"
-        $newPath
-        Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+        #newPath = "$nodejsDir;$env:Path"
+        #$newPath
+        #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
         $env:Path
         node --version
       }
