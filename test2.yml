@@ -1,0 +1,61 @@
+jobs:
+- job: Windows_MustPass
+  strategy:
+    maxParallel: 10
+    matrix:
+      Node 4.9:
+        NODE_VERSION: '4.9'
+      
+
+  continueOnError: false
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+
+  - powershell: |
+      $iojsValues = '1.8','2.5','3.3'
+      if ($(NODE_VERSION) -In $iojsValues)
+      {
+        Write-Information ("iojs")
+      }
+      else
+      {
+        Write-Information ("nodejs install")
+        $nodejsDir = Join-Path "$(agent.tempDirectory)" "tmp"
+        #dir "$nodejsDir"
+        #Remove-Item -Recurse -Force "$nodejsDir"
+        $nodejsUrl = "https://nodejs.org/dist/index.json"
+        $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
+        $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
+        $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+        $ver = $matchValues[0].version
+        $ver
+        $zip = "node-$ver-win-x64.zip"
+        $zip
+        $nodejsUrl = "https://nodejs.org/dist/$ver/$zip"
+        $nodejsUrl
+        $file = Join-Path "$(agent.tempDirectory)" "node.zip"
+        Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
+        dir $(agent.tempDirectory)
+      }
+    displayName: "download node zip file"
+
+  - task: ExtractFiles@1
+    displayName: 'Extract files  Please Work'
+    inputs:
+      archiveFilePatterns: "$(agent.tempDirectory)\\node.zip"
+      destinationFolder: "$(agent.tempDirectory)\\tmp"
+      cleanDestinationFolder: false
+
+  - powershell: |
+      $nodejsDir = Join-Path "$(agent.tempDirectory)" "tmp"
+      newPath = "$nodejsDir;$env:Path"
+      $newPath
+      Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+    displayName: "set path"
+      
+  - powershell: |
+      $env:Path
+      node --version
+    displayName: "See node version"
