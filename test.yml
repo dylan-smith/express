@@ -184,16 +184,15 @@ jobs:
         $MSIArguments = @("/a", "$file", "/qn", "TARGETDIR=$targetDir", "/L", $logFile)
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
         dir "c:\mickey"
-        #$nodeDir = "c:\mickey\iojs"
-        #copy "c:\mickey\iojs\iojs.exe" "c:\mickey\iojs\node.exe"
-        #dir "c:\mickey\iojs"
+        $nodejsDir = "c:\mickey\nodejs"
+        dir "c:\mickey\nodejs"
         #dir "$iojsDir"
         #more $logFile
-        #$newPath = "$iojsDir;$env:Path"
-        #$newPath
-        #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-        #$env:Path
-        #node --version
+        $newPath = "$nodejsDir;$env:Path"
+        $newPath
+        Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+        $env:Path
+        node --version
       }
     displayName: "install 3.3"
 
