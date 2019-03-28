@@ -1,0 +1,39 @@
+jobs:
+- job: Windows_MustPass
+  strategy:
+    maxParallel: 10
+    matrix:
+      Node 4.9:
+        NODE_VERSION: '4.9'
+      
+
+  continueOnError: false
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+
+  - powershell: |
+      $nodejsDir = "$(agent.tempDirectory)"
+      $msi = "node-v10.15.2-x64.msi"
+      $msi
+      $nodejsUrl = "https://nodejs.org/dist/v10.15.2/node-v10.15.2-x64.msi"
+      $nodejsUrl
+      $file = Join-Path "$(agent.tempDirectory)" "$msi"
+      Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
+      dir $(agent.tempDirectory)
+      ##Set variables and attempt to install
+      $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
+      #$targetDir = "$(agent.tempDirectory)"
+      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+      #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
+      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+      dir $(agent.tempDirectory)
+      #$iojsDir = "c:\Program Files\iojs"
+      #dir "$iojsDir"
+      more $logFile
+      #newPath = "$nodejsDir;$env:Path"
+      #$newPath
+      #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+      $env:Path
+      node --version

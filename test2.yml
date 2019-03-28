@@ -17,7 +17,23 @@ jobs:
       $iojsValues = '1.8','2.5','3.3'
       if ($(NODE_VERSION) -In $iojsValues)
       {
-        Write-Information ("iojs")
+        Write-Information ("iojs install")
+        $iojsDir = Join-Path "$(agent.tempDirectory)" "tmp"
+        #dir "$nodejsDir"
+        #Remove-Item -Recurse -Force "$nodejsDir"
+        $iojsUrl = "https://iojs.org/dist/index.json"
+        $iojsList = Invoke-WebRequest -Uri $iojsUrl
+        $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+        $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+        $ver = $matchValues[0].version
+        $ver
+        $zip = "iojs-$ver-win-x64.zip"
+        $zip
+        $iojsUrl = "https://iojs.org/dist/$ver/$zip"
+        $iojsUrl
+        $file = Join-Path "$(agent.tempDirectory)" "node.zip"
+        Invoke-WebRequest -Uri $iojsUrl -OutFile $file
+        dir $(agent.tempDirectory)
       }
       else
       {
@@ -50,7 +66,7 @@ jobs:
 
   - powershell: |
       $nodejsDir = Join-Path "$(agent.tempDirectory)" "tmp"
-      $nodejsDir = Join-Path "$nodejsDir" "node-v4.9.1-win-x64"
+      $nodejsDir = Join-Path "$nodejsDir" "iojs-v4.9.1-win-x64"
       dir $nodejsDir
       $newPath = "$nodejsDir;$env:Path"
       $newPath
