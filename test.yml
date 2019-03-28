@@ -4,7 +4,7 @@ jobs:
     maxParallel: 10
     matrix:
       Node 3.3:
-        NODE_VERSION: '3.3'
+        NODE_VERSION: '6.14'
       
 
   continueOnError: false
@@ -177,19 +177,23 @@ jobs:
         dir $(agent.tempDirectory)
         ##Set variables and attempt to install
         $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
+        $targetDir = "c:\mickey"
         #$targetDir = "$(agent.tempDirectory)"
-        $MSIArguments = @("/i", "$file", "/fa", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+        #$MSIArguments = @("/i", "$file", "/fa", "/qn", "/norestart", "/L", $logFile, "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
         #$MSIArguments = @("/x", "$file", "/qn", "/norestart", "/L*v", $logFile)
+        $MSIArguments = @("/a", "$file", "/qn", "TARGETDIR=$targetDir", "/L", $logFile)
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
-        dir $(agent.tempDirectory)
-        #$iojsDir = "c:\Program Files\iojs"
+        dir "c:\mickey"
+        #$nodeDir = "c:\mickey\iojs"
+        #copy "c:\mickey\iojs\iojs.exe" "c:\mickey\iojs\node.exe"
+        #dir "c:\mickey\iojs"
         #dir "$iojsDir"
-        more $logFile
-        #newPath = "$nodejsDir;$env:Path"
+        #more $logFile
+        #$newPath = "$iojsDir;$env:Path"
         #$newPath
         #Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-        $env:Path
-        node --version
+        #$env:Path
+        #node --version
       }
     displayName: "install 3.3"
 
