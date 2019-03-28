@@ -186,6 +186,15 @@ jobs:
         $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
         $ver = $matchValues[0].version
         $ver
+        $edgeValues = '0.10','0.12'
+        if ($(NODE_VERSION) -In $edgeValues)
+        {
+          $msi = "node-$ver-x86.msi"
+        }
+        else
+        {
+          $msi = "node-$ver-x64.msi"
+        }
         $msi = "node-$ver-x64.msi"
         $msi
         $nodejsUrl = "https://nodejs.org/dist/$ver/$msi"
