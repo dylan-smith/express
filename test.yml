@@ -24,8 +24,6 @@ jobs:
     displayName: "npm cache clean --force"
 
   - powershell: |
-      dir "c:\npm"
-      ls "c:\npm" -r | measure -s Length
       if(Test-Path -Path "C:\Program Files (x86)\Nodejs")
       {
         Remove-Item -Recurse -Force "C:\Program Files (x86)\Nodejs"
@@ -58,6 +56,11 @@ jobs:
       {
         Remove-Item -Recurse -Force "C:\npm"
       }
+      if(Test-Path -Path "C:\ProgramData\Chocolatey\bin")
+      {
+        Remove-Item -Recurse -Force "C:\ProgramData\Chocolatey\bin"
+      }
+      dir "C:\ProgramData\Chocolatey"
     displayName: "Delete node stuff"
 
   - powershell: |
