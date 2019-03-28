@@ -25,11 +25,8 @@ jobs:
       #Set variables and attempt to install
       $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
       $targetDir = "$(agent.tempDirectory)"
-      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "INSTALLDIR=`"$targetDir`"")
-      $process = Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow -PassThru
-      Write-Output("Process results")
-      $process
-      $process.ExitCode
+      $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "INSTALLDIR=`"$targetDir`"", "ADDLOCAL=ALL", "REMOVE=NodePerfCtrSupport,NodeEtwSupport")
+      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       dir $(agent.tempDirectory)
       more $logFile
 
