@@ -26,7 +26,10 @@ jobs:
       $logFile = Join-Path "$(agent.tempDirectory)" "install.log"
       $targetDir = "$(agent.tempDirectory)"
       $MSIArguments = @("/i", "$file", "/qn", "/norestart", "/L*v", $logFile, "INSTALLDIR=`"$targetDir`"")
-      Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow 
+      $process = Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow -PassThru
+      Write-Output("Process results")
+      $process
+      $process.ExitCode
       dir $(agent.tempDirectory)
       more $logFile
 
