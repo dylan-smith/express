@@ -6,8 +6,8 @@ steps:
   displayName: "Get Major Version Number of NodeJS Using PowerShell"
 
 - powershell: |
-  $iojsValues = '1.8','2.5','3.3'
-  if ($(NODE_VERSION) -In $iojsValues)
+  $iojsValues = ('1.8','2.5','3.3')
+  if (($(NODE_VERSION) -In $iojsValues))
   {
     $iojsUrl = "https://iojs.org/dist/index.json"
     $iojsList = Invoke-WebRequest -Uri $iojsUrl
