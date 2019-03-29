@@ -73,18 +73,17 @@ steps:
   displayName: "Node Version"
 
 - powershell: |
-    #Rename-Item -path "C:\npm" -newName "npm-bad"
-    c:\mynodejs\nodejs\npm.cmd --version
-  displayName: "NPM Version - folder rename"
+    Rename-Item -path "C:\npm" -newName "npm-bad"
+    npm --version
+  displayName: "NPM Version - Hey Tiago I turned on the rename now."
 
 #Start The Before Install Tasks 
 - powershell: |
-    c:\mynodejs\nodejs\npm.cmd config set shrinkwrap false
+    npm config set shrinkwrap false
   displayName: 'Skip updating shrinkwrap / lock'
 
 - powershell: |
-    gci env:* | sort-object name
-    c:\mynodejs\nodejs\npm.cmd rm --silent --save-dev connect-redis
+    npm rm --silent --save-dev connect-redis
   displayName: 'Remove all non-test dependencies'
 
 - powershell: |
