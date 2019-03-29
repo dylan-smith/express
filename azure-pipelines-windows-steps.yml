@@ -63,11 +63,6 @@ steps:
       dir "$nodejsDir"
       $newPath = "$nodejsDir;$env:Path"
       Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-      $x = ""
-      #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$x";
-      #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$x";
-     # [Environment]::SetEnvironmentVariable("NPM_CONFIG_CACHE", "", [EnvironmentVariableTarget]::Machine)
-     # [Environment]::SetEnvironmentVariable("NPM_CONFIG_PREFIX", "", [EnvironmentVariableTarget]::Machine)
       Write-Output ("##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$nodejsDir")
       Write-Output ("##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$nodejsDir")
 
@@ -79,10 +74,8 @@ steps:
   displayName: "Node Version"
 
 - powershell: |
-    #Rename-Item -path "C:\npm" -newName "npm-bad"
-    gci env:* | sort-object name
     npm --version
-  displayName: "NPM Version - Hey Tiago I turned off the rename now."
+  displayName: "NPM Version"
 
 #Start The Before Install Tasks 
 - powershell: |
