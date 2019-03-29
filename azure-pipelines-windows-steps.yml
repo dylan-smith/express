@@ -66,11 +66,11 @@ steps:
     node --version
   displayName: "Node Version"
 
-- powershell: |
-    $env:Path
-    node --version
-    npm --version
-  displayName: "NPM Version"
+#- powershell: |
+#    $env:Path
+#    node --version
+#    npm --version
+#  displayName: "NPM Version"
 
 #Start The Before Install Tasks 
 - powershell: |
