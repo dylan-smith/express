@@ -64,8 +64,10 @@ steps:
       $x = ""
       #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$x";
       #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$x";
-      [Environment]::SetEnvironmentVariable("NPM_CONFIG_CACHE", "", [EnvironmentVariableTarget]::Machine)
-      [Environment]::SetEnvironmentVariable("NPM_CONFIG_PREFIX", "", [EnvironmentVariableTarget]::Machine)
+     # [Environment]::SetEnvironmentVariable("NPM_CONFIG_CACHE", "", [EnvironmentVariableTarget]::Machine)
+     # [Environment]::SetEnvironmentVariable("NPM_CONFIG_PREFIX", "", [EnvironmentVariableTarget]::Machine)
+      Write-Output ("##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$nodejsDir")
+      Write-Output ("##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$nodejsDir")
 
     }
   displayName: "Install Node"
