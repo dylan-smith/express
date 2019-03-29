@@ -85,8 +85,9 @@ steps:
   displayName: "where node and"
 
 - powershell: |
-    (get-command node).Path
-    (get-command npm).Path
+    where.exe node
+    where.exe npm
+    where.exe npm.cmd
     npm rm --silent --save-dev connect-redis
   displayName: 'Remove all non-test dependencies'
 
