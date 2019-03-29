@@ -61,6 +61,10 @@ steps:
       dir "$nodejsDir"
       $newPath = "$nodejsDir;$env:Path"
       Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+      $x = ""
+      Write-Host "##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$x";
+      Write-Host "##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$x";
+
     }
   displayName: "Install Node"
 
@@ -69,7 +73,7 @@ steps:
   displayName: "Node Version"
 
 - powershell: |
-    Rename-Item -path "C:\npm" -newName "npm-bad"
+    #Rename-Item -path "C:\npm" -newName "npm-bad"
     npm --version
   displayName: "NPM Version - folder rename"
 
