@@ -69,11 +69,7 @@ steps:
   displayName: "Node Version"
 
 - powershell: |
-#    if(Test-Path -Path "C:\npm")
-#    {
-#      Remove-Item -Recurse -Force "C:\npm"
-#    }
-    Rename-Item -path ‘C:\npm’ -newName ‘npm-bad’
+    Rename-Item -path "C:\npm" -newName "npm-bad"
     npm --version
   displayName: "NPM Version - folder rename"
 
@@ -84,9 +80,6 @@ steps:
 
 - powershell: |
     gci env:* | sort-object name
-  displayName: "dump environment vars"
-
-- powershell: |
     npm.cmd rm --silent --save-dev connect-redis
   displayName: 'Remove all non-test dependencies'
 
