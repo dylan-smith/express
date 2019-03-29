@@ -74,6 +74,8 @@ steps:
 
 #Start The Before Install Tasks 
 - powershell: |
+    where npm
+    where node
     npm config set shrinkwrap false
   displayName: 'Skip updating shrinkwrap / lock'
 
