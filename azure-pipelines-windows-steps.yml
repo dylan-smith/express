@@ -69,10 +69,11 @@ steps:
   displayName: "Node Version"
 
 - powershell: |
-    Push-Location env:
-    (ls path).value.split(";")
-    Pop-Location
-  displayName: "NPM Version"
+    if(Test-Path -Path "C:\npm")
+    {
+      Remove-Item -Recurse -Force "C:\npm"
+    }
+  displayName: "NPM Version - right now getting the path and delete npm"
 
 #Start The Before Install Tasks 
 #- powershell: |
