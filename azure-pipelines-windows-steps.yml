@@ -61,9 +61,9 @@ steps:
       dir "$nodejsDir"
       $newPath = "$nodejsDir;$env:Path"
       Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
-      $x = ""
-      Write-Host "##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$x";
-      Write-Host "##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$x";
+      #$x = ""
+      #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$x";
+      #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$x";
 
     }
   displayName: "Install Node"
@@ -74,17 +74,17 @@ steps:
 
 - powershell: |
     #Rename-Item -path "C:\npm" -newName "npm-bad"
-    npm --version
+    c:\mynodejs\nodejs\npm --version
   displayName: "NPM Version - folder rename"
 
 #Start The Before Install Tasks 
 - powershell: |
-    npm config set shrinkwrap false
+    c:\mynodejs\nodejs\npm config set shrinkwrap false
   displayName: 'Skip updating shrinkwrap / lock'
 
 - powershell: |
     gci env:* | sort-object name
-    npm.cmd rm --silent --save-dev connect-redis
+    c:\mynodejs\nodejsnpm.cmd rm --silent --save-dev connect-redis
   displayName: 'Remove all non-test dependencies'
 
 - powershell: |
