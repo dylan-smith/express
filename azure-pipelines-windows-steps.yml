@@ -30,6 +30,8 @@ steps:
       copy "$oldexe" "$newexe"
       $newPath = "$iojsDir;$env:Path"
       Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+      Write-Output ("##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$iojsDir")
+      Write-Output ("##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$iojsDir")
     }
     else
     {
