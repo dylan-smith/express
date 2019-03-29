@@ -81,15 +81,11 @@ steps:
 #0  displayName: 'Skip updating shrinkwrap / lock'
 
 - powershell: |
-    (get-command node).Path
-    (get-command npm).Path
-  displayName: "where node and"
+    gci env:* | sort-object name
+  displayName: "dump environment vars"
 
 - powershell: |
-    where.exe node
-    where.exe npm
-    where.exe npm.cmd
-    npm rm --silent --save-dev connect-redis
+    npm.cmd rm --silent --save-dev connect-redis
   displayName: 'Remove all non-test dependencies'
 
 - powershell: |
