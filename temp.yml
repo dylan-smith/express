@@ -1,0 +1,104 @@
+- powershell: |
+  $iojsValues = ('1.8','2.5','3.3')
+  if (($(NODE_VERSION) -In $iojsValues))
+  {
+    $iojsUrl = "https://iojs.org/dist/index.json"
+    $iojsList = Invoke-WebRequest -Uri $iojsUrl
+    $iojsConverted = ConvertFrom-Json -InputObject $iojsList
+    $matchValues = $iojsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+    $ver = $matchValues[0].version
+    Write-Output("Installing Node Version $ver")
+    $msi = "iojs-$ver-x64.msi"
+    $iojsUrl = "https://iojs.org/dist/$ver/$msi"
+    $file = Join-Path "$(agent.tempDirectory)" "$msi"
+    Invoke-WebRequest -Uri $iojsUrl -OutFile $file
+    $targetDir = "c:\myiojs"
+    $MSIArguments = @("/a", "$file", "/qn", "TARGETDIR=$targetDir")
+    Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+    $iojsDir = Join-Path "$targetDir" "iojs"
+    $oldexe = Join-Path "$iojsdir" "iojs.exe"
+    $newexe = Join-Path "$iojsdir" "node.exe"
+    copy "$oldexe" "$newexe"
+    $newPath = "$iojsDir;$env:Path"
+    Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+  }
+  else
+  {
+    $nodejsUrl = "https://nodejs.org/dist/index.json"
+    $nodejsList = Invoke-WebRequest -Uri $nodejsUrl
+    $nodejsConverted = ConvertFrom-Json -InputObject $nodejsList
+    $matchValues = $nodejsConverted | Where-Object {$_.version -match "v$(NODE_VERSION)"}
+    $ver = $matchValues[0].version
+    Write-Output("Installing Node Version $ver")
+    if ($(NODE_VERSION) -eq "0.10")
+    {
+      $msi = "node-$ver-x86.msi"
+    }
+    elseif ($(NODE_VERSION) -eq "0.12")
+    {
+      $msi = "node-$ver-x86.msi"
+    }
+    else
+    {
+      $msi = "node-$ver-x64.msi"
+    }
+    $nodejsUrl = "https://nodejs.org/dist/$ver/$msi"
+    $file = Join-Path "$(agent.tempDirectory)" "$msi"
+    Invoke-WebRequest -Uri $nodejsUrl -OutFile $file
+    $targetDir = "c:\mynodejs"
+    $MSIArguments = @("/a", "$file", "/qn", "TARGETDIR=$targetDir")
+    Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+    $nodejsDir = Join-Path "$targetDir" "nodejs"
+    $newPath = "$nodejsDir;$env:Path"
+    Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
+  }
+displayName: "Install Node"
+
+- powershell: |
+    node --version
+  displayName: "Node Version"
+
+- powershell: |
+    npm --version
+  displayName: "NPM Version"
+
+#Start The Before Install Tasks 
+- powershell: |
+    npm config set shrinkwrap false
+  displayName: 'Skip updating shrinkwrap / lock'
+
+- powershell: |
+    npm rm --silent --save-dev connect-redis
+  displayName: 'Remove all non-test dependencies'
+
+- powershell: |
+    npm install --silent --save-dev mocha@3.5.3
+  displayName: 'Setup Node.js version-specific dependencies: mocha for testing: use 3.x for Node.js < 6'
+  condition: lt(variables['NodeMajorVersion'], 6)
+
+- powershell: |
+    npm install --silent --save-dev supertest@2.0.0
+  displayName: 'Setup Node.js version-specific dependencies: supertest for http calls: use 2.0.0 for Node.js < 4'
+  condition: lt(variables['NodeMajorVersion'], 4)
+  
+- powershell: |
+    # Prune & rebuild node_modules
+    if (Test-Path -Path node_modules) {
+        npm prune
+        npm rebuild
+      }
+  displayName: 'Update Node.js modules'
+
+#Finish With Before Install Tasks. Time to install dependencies
+- powershell: |
+    npm install
+  displayName: 'npm install'
+  
+#Testing
+- powershell: |
+    npm run test-ci
+  displayName: 'Run test script'
+
+- powershell: |
+    npm run lint
+  displayName: 'Run linting'
