@@ -67,6 +67,8 @@ steps:
   displayName: "Node Version"
 
 - powershell: |
+    $env:Path
+    node --version
     npm --version
   displayName: "NPM Version"
 
