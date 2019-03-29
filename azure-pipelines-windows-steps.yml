@@ -68,17 +68,19 @@ steps:
     node --version
   displayName: "Node Version"
 
-#- powershell: |
+- powershell: |
 #    if(Test-Path -Path "C:\npm")
 #    {
 #      Remove-Item -Recurse -Force "C:\npm"
 #    }
-#  displayName: "NPM Version - right now getting the path and delete npm"
+    Rename-Item -path ‘C:\npm’ -newName ‘npm-bad’
+    npm --version
+  displayName: "NPM Version - folder rename"
 
 #Start The Before Install Tasks 
-#- powershell: |
-#    npm config set shrinkwrap false
-#0  displayName: 'Skip updating shrinkwrap / lock'
+- powershell: |
+    npm config set shrinkwrap false
+  displayName: 'Skip updating shrinkwrap / lock'
 
 - powershell: |
     gci env:* | sort-object name
