@@ -68,12 +68,12 @@ steps:
     node --version
   displayName: "Node Version"
 
-- powershell: |
-    if(Test-Path -Path "C:\npm")
-    {
-      Remove-Item -Recurse -Force "C:\npm"
-    }
-  displayName: "NPM Version - right now getting the path and delete npm"
+#- powershell: |
+#    if(Test-Path -Path "C:\npm")
+#    {
+#      Remove-Item -Recurse -Force "C:\npm"
+#    }
+#  displayName: "NPM Version - right now getting the path and delete npm"
 
 #Start The Before Install Tasks 
 #- powershell: |
