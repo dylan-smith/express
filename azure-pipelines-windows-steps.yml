@@ -24,6 +24,7 @@ steps:
       $MSIArguments = @("/a", "$file", "/qn", "TARGETDIR=$targetDir")
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       $iojsDir = Join-Path "$targetDir" "iojs"
+      dir "$iojsDir"
       $oldexe = Join-Path "$iojsdir" "iojs.exe"
       $newexe = Join-Path "$iojsdir" "node.exe"
       copy "$oldexe" "$newexe"
@@ -57,6 +58,7 @@ steps:
       $MSIArguments = @("/a", "$file", "/qn", "TARGETDIR=$targetDir")
       Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
       $nodejsDir = Join-Path "$targetDir" "nodejs"
+      dir "$nodejsDir"
       $newPath = "$nodejsDir;$env:Path"
       Write-Host "##vso[task.setvariable variable=PATH;]$newPath";
     }
@@ -73,12 +75,14 @@ steps:
   displayName: "NPM Version"
 
 #Start The Before Install Tasks 
+#- powershell: |
+#    npm config set shrinkwrap false
+#0  displayName: 'Skip updating shrinkwrap / lock'
+
 - powershell: |
-    $env:Path
-    where npm
-    where node
-    npm config set shrinkwrap false
-  displayName: 'Skip updating shrinkwrap / lock'
+    (get-command node).Path
+    (get-command npm).Path
+  displayName: "where node and"
 
 - powershell: |
     npm rm --silent --save-dev connect-redis
