@@ -37,7 +37,7 @@ jobs:
     maxParallel: 10
     matrix:
       Node 0.10:
-        NODE_VERSION: '0.10.'
+        NODE_VERSION: '0.10'
       Node 0.12:
         NODE_VERSION: '0.12'
       Node 1.8:
