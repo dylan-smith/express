@@ -64,8 +64,8 @@ steps:
       $x = ""
       #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_CACHE;]$x";
       #Write-Host "##vso[task.setvariable variable=NPM_CONFIG_PREFIX;]$x";
-      [Environment]::SetEnvironmentVariable("NPM_CONFIG_CACHE", "$x", [EnvironmentVariableTarget]::Machine)
-      [Environment]::SetEnvironmentVariable("NPM_CONFIG_PREFIX", "$x", [EnvironmentVariableTarget]::Machine)
+      [Environment]::SetEnvironmentVariable("NPM_CONFIG_CACHE", "", [EnvironmentVariableTarget]::Machine)
+      [Environment]::SetEnvironmentVariable("NPM_CONFIG_PREFIX", "", [EnvironmentVariableTarget]::Machine)
 
     }
   displayName: "Install Node"
@@ -76,6 +76,7 @@ steps:
 
 - powershell: |
     #Rename-Item -path "C:\npm" -newName "npm-bad"
+    gci env:* | sort-object name
     npm --version
   displayName: "NPM Version - Hey Tiago I turned off the rename now."
 
