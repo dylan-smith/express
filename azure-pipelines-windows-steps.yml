@@ -6,7 +6,6 @@ steps:
   displayName: "Get Major Version Number of NodeJS Using PowerShell"
 
 - powershell: |
-  #in order to get iojs versions to install correctly, created our own install task.
   $iojsValues = '1.8','2.5','3.3'
   if ($(NODE_VERSION) -In $iojsValues)
   {
